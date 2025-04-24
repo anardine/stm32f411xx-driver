@@ -218,7 +218,7 @@
   * @param[in]			- the pin number to set
   * @param[in]			- the data to write to the output mode
   * 
-  * @return				- the entire bit value from the IDR register for a given port
+  * @return				- none
   *
   * @notes				- none
   *
@@ -245,7 +245,7 @@
   * @param[in]			- pointer to the base address of the gpio peripheral
   * @param[in]			- the data to write to the output mode
   * 
-  * @return				- the entire 32 bit value from the ODR register for a given port
+  * @return				- none
   *
   * @notes				- none
   *
@@ -258,6 +258,25 @@
  }
 
 
+/****************************************************************
+  * @name				-GPIO_ToggleOutputPin
+  *
+  * @brief 				- This function toggles the output pin
+  *
+  * @param[in]			- pointer to the base address of the gpio peripheral
+  * @param[in]			- the pin number to write to the output mode
+  * 
+  * @return				- none
+  *
+  * @notes				- none
+  *
+  * */
  void GPIO_ToggleOutputPin(GPIOx_MapR_t *pGPIOx, uint8_t pinNumber){
     pGPIOx->ODR ^= (1 << pinNumber);
+
+    //000101001001010010011  - bit
+    //000000000000000000001  - mask (pretending on bit pos 0)
+    //000101001001010010010  - RESULT: XOR will only return 1 when it's either 1 on the bit or the mask, and not both. You can use to write 1 or 0 everytime you call the function to that pin
+
+
  }
