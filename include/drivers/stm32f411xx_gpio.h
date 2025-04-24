@@ -33,12 +33,15 @@
  
  void GPIO_DeInit(GPIOx_MapR_t *pGPIOx); // resets all data from a specific GPIO port
  
- void GPIO_ReadFromInputPin(GPIOx_MapR_t *pGPIOx, uint8_t pinNumber);
+ uint8_t GPIO_ReadFromInputPin(GPIOx_MapR_t *pGPIOx, uint8_t pinNumber); // reads the value on the input pin defined
  
- void GPIO_ReadFromInputPort(void);
- void GPIO_WriteToOutputPin(void);
- void GPIO_WriteToOutputPort(void);
- void GPIO_ToggleOutputPin(void);
+ uint32_t GPIO_ReadFromInputPort(GPIOx_MapR_t *pGPIOx); // read the entire value of all GPIOx pins
+
+ void GPIO_WriteToOutputPin(GPIOx_MapR_t *pGPIOx, uint8_t pinNumber, uint8_t dataToWrite); // write the to the output pin
+
+ void GPIO_WriteToOutputPort(GPIOx_MapR_t *pGPIOx, uint32_t dataToWrite); // write to the output port of that GPIO entirelly
+
+ void GPIO_ToggleOutputPin(GPIOx_MapR_t *pGPIOx, uint8_t pinNumber);
  
  //Interrupts handling
  void GPIO_IRQConfig(void);

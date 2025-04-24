@@ -81,33 +81,6 @@
      uint8_t ModerPinPosition = pinToSet *2; // MODER have 2 bit settings.
      uint8_t SpeedPinPosition = pinToSet *2; // SPEED have 2 bit settings.
      uint8_t PuPdPinPosition = pinToSet *2; // PullUp PullDown have 2 bit settings.
-     uint8_t AltFuncPosition = 0;
- 
-     if(pinToSet <=7)
-     {
-         AltFuncPosition = pinToSet *4;
- 
-     } else {
-         switch(pinToSet) {
-         case 8: AltFuncPosition = 0;
-         break;
-         case 9: AltFuncPosition = 4;
-         break;
-         case 10: AltFuncPosition = 8;
-         break;
-         case 11: AltFuncPosition = 12;
-         break;
-         case 12: AltFuncPosition = 16;
-         break;
-         case 13: AltFuncPosition = 20;
-         break;
-         case 14: AltFuncPosition = 24;
-         break;
-         case 15: AltFuncPosition = 28;
-         break;
-         }
-     }
- 
  
      //set the MODER register to the value defined at the moder definition of the Handler
      uint8_t pinMode = pToGPIOHandle->GPIO_PinConfig.GPIO_PinMode; // can be set to 0 (input), 1 (output), 2 (Alt function) or 3 (Analog)
@@ -122,21 +95,38 @@
  
      uint8_t puPdMode = pToGPIOHandle->GPIO_PinConfig.GPIO_PinPuPdControl; // can be 0 (no pupd), 1 (up), 2 (down)
      pToGPIOHandle->pGPIOx->OSPEEDR |= (puPdMode << PuPdPinPosition);
- 
-     uint8_t altMode = pToGPIOHandle->GPIO_PinConfig.GPIO_PinAltFunMode; // varies accornding to the function setting the user wants, ranging from 0000 to 1111. Check the reference manual for information
- 
-     if(pinToSet <= 7)
-     {
-         pToGPIOHandle->pGPIOx->AFRL |= (altMode << AltFuncPosition);
-     }
-     else
-     {
-         pToGPIOHandle->pGPIOx->AFRH |= (altMode << AltFuncPosition);
-     }
- 
+
+     if(pToGPIOHandle->GPIO_PinConfig.GPIO_PinMode == 2) { // this defends the necessity of setting the alternate function registers only if the mode is set to alternate function
+       
+        uint8_t AltFuncPosition = 0; // define the alternate function position map depeding on what was assigned to pin map
+        uint8_t altMode = pToGPIOHandle->GPIO_PinConfig.GPIO_PinAltFunMode; // varies accornding to the function setting the user wants, ranging from 0000 to 1111. Check the reference manual for information
+       
+        if(pinToSet <=7) {
+            AltFuncPosition = pinToSet *4;
+            pToGPIOHandle->pGPIOx->AFRL |= (altMode << AltFuncPosition);
+        } else {
+            switch(pinToSet) {
+            case 8: AltFuncPosition = 0;
+            break;
+            case 9: AltFuncPosition = 4;
+            break;
+            case 10: AltFuncPosition = 8;
+            break;
+            case 11: AltFuncPosition = 12;
+            break;
+            case 12: AltFuncPosition = 16;
+            break;
+            case 13: AltFuncPosition = 20;
+            break;
+            case 14: AltFuncPosition = 24;
+            break;
+            case 15: AltFuncPosition = 28;
+            break;
+            }
+            pToGPIOHandle->pGPIOx->AFRH |= (altMode << AltFuncPosition);
+        }
+    }
  }
- 
- 
  
  
  /****************************************************************
@@ -169,4 +159,105 @@
                  printf("No GPIO port recognized to reset. Please review the pointer to the correct GPIO port");
              }
  
+ }
+
+
+  /****************************************************************
+  * @name				-GPIO_ReadFromInputPin
+  *
+  * @brief 				- This function returns the read bit from the GPIO and pin number provided
+  *
+  * @param[in]			- pointer to the base address of the gpio peripheral
+  * @param[in]			- pin number for reading
+  * 
+  * @return				- 0 or 1 when data is read
+  *
+  * @notes				- none
+  *
+  * */
+ uint8_t GPIO_ReadFromInputPin(GPIOx_MapR_t *pGPIOx, uint8_t pinNumber) {
+    
+    uint8_t inputMode = (pGPIOx->MODER >> pinNumber*2);
+    inputMode &= (3 << 0); // check to see if there's anything stored in MODER other than 0
+
+    if (inputMode == 0) { // proceeds only if there's nothing ser in MODER (which is then the result of 00)
+    int8_t x = (pGPIOx->IDR >> pinNumber); 
+    x &= (1 << 0);
+   return x;
+    }
+ }
+
+
+  /****************************************************************
+  * @name				-GPIO_ReadFromInputPort
+  *
+  * @brief 				- This function returns the entire 32bit value from the read of any given GPIO port
+  *
+  * @param[in]			- pointer to the base address of the gpio peripheral
+  * 
+  * @return				- the entire 32 bit value from the IDR register for a given port
+  *
+  * @notes				- none
+  *
+  * */
+ uint32_t GPIO_ReadFromInputPort(GPIOx_MapR_t *pGPIOx) {
+
+    int32_t valueAtGPIOx = pGPIOx->IDR;
+    return valueAtGPIOx;
+
+ }
+
+
+
+ /****************************************************************
+  * @name				-GPIO_WriteToOutputPin
+  *
+  * @brief 				- This function sets the output bit of the port and data provided
+  *
+  * @param[in]			- pointer to the base address of the gpio peripheral
+  * @param[in]			- the pin number to set
+  * @param[in]			- the data to write to the output mode
+  * 
+  * @return				- the entire bit value from the IDR register for a given port
+  *
+  * @notes				- none
+  *
+  * */
+ void GPIO_WriteToOutputPin(GPIOx_MapR_t *pGPIOx, uint8_t pinNumber, uint8_t dataToWrite) {
+
+    uint8_t outputMode = (pGPIOx->MODER >> pinNumber*2); 
+    outputMode &= (3 << 0); //check to see if there's anything stored in MODER defined as output
+
+    if(outputMode == 1) { //only proceeds if MODER is set to output on pin selected
+    pGPIOx->ODR |= (dataToWrite << pinNumber);
+    } else {
+        printf("Unable to set output register. Please set the MODER registry as output mode (01) before setting output bits");
+    }
+
+
+ }
+
+/****************************************************************
+  * @name				-GPIO_WriteToOutputPort
+  *
+  * @brief 				- This function sets the entire output 32-bit reg of the port
+  *
+  * @param[in]			- pointer to the base address of the gpio peripheral
+  * @param[in]			- the data to write to the output mode
+  * 
+  * @return				- the entire 32 bit value from the ODR register for a given port
+  *
+  * @notes				- none
+  *
+  * */
+ void GPIO_WriteToOutputPort(GPIOx_MapR_t *pGPIOx, uint32_t dataToWrite) {
+
+    // reset the entire ODR given that we're going to re-write the whole 32 bit
+    pGPIOx->ODR |= dataToWrite;
+
+ }
+
+
+ void GPIO_ToggleOutputPin(GPIOx_MapR_t *pGPIOx, uint8_t pinNumber){
+    pGPIOx->ODR ^= (1 << pinNumber);
  }

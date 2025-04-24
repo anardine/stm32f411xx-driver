@@ -12,7 +12,7 @@
  
  #define ENABLE						1
  #define DISABLE 					0
- #define SET							ENABLE
+ #define SET						ENABLE
  #define RESET						DISABLE
  
  // keep all the base addresses of the microcontroller
@@ -24,16 +24,16 @@
  #define SRAM 						SRAM1_BASEADDR
  
  #define ROM_BASEADDR				0x1FFF0000U
- #define ROM							ROM_BASEADDR
+ #define ROM						ROM_BASEADDR
  
  #define OTP_BASEADDR				0x1FFF7800U
  
  // base addresses of each bus domains
- #define PERIPH_BASEADDR				0x40000000U
- #define APB1PERIPH_BASE				0x40000000U
- #define APB2PERIPH_BASE				0x40010000U
- #define AHB1PERIPH_BASE				0x40020000U
- #define AHB2PERIPH_BASE				0x50000000U
+ #define PERIPH_BASEADDR			0x40000000U
+ #define APB1PERIPH_BASE			0x40000000U
+ #define APB2PERIPH_BASE			0x40010000U
+ #define AHB1PERIPH_BASE			0x40020000U
+ #define AHB2PERIPH_BASE			0x50000000U
  
  // base address for RTC Clock
  #define RTC_BASEADDR				(APB1PERIPH_BASE + 0x2800)
@@ -52,14 +52,14 @@
  // base addresses of components for the APB1 peripheral
  #define SPI2_BASEADDR				(APB1PERIPH_BASE + 0x3800)
  #define SPI3_BASEADDR				(APB1PERIPH_BASE + 0x3C00)
- #define USART2_BASEADDR				(APB1PERIPH_BASE + 0x4400)
+ #define USART2_BASEADDR			(APB1PERIPH_BASE + 0x4400)
  #define I2C1_BASEADDR				(APB1PERIPH_BASE + 0x5400)
  #define I2C2_BASEADDR				(APB1PERIPH_BASE + 0x5800)
  #define I2C3_BASEADDR				(APB1PERIPH_BASE + 0x5C00)
  
  // base addresses of components for the APB2 peripheral
- #define USART1_BASEADDR				(APB2PERIPH_BASE + 0x1000)
- #define USART6_BASEADDR				(APB2PERIPH_BASE + 0x1400)
+ #define USART1_BASEADDR			(APB2PERIPH_BASE + 0x1000)
+ #define USART6_BASEADDR			(APB2PERIPH_BASE + 0x1400)
  #define SPI1_BASEADDR				(APB2PERIPH_BASE + 0x3000)
  #define SPI4_BASEADDR				(APB2PERIPH_BASE + 0x3400)
  #define SPI5_BASEADDR				(APB2PERIPH_BASE + 0x5000)
@@ -67,7 +67,7 @@
  #define SYSCONFIG_BASEADDR			(APB2PERIPH_BASE + 0x3800)
  
  // base addresses of components for the APB2 peripheral
- #define USBOTG_BASEADDR				(AHB2PERIPH_BASE + 0x0000)
+ #define USBOTG_BASEADDR			(AHB2PERIPH_BASE + 0x0000)
  
  
  #endif /* INC_STM32F411XX_H_ */
@@ -138,12 +138,12 @@
      volatile uint32_t OTYPER;		//output type register
      volatile uint32_t OSPEEDR;		//output speed register
      volatile uint32_t PUPDR;		//pull-up or pull-down register
-     volatile uint32_t IDR; 			//input data register
+     volatile uint32_t IDR; 		//input data register
      volatile uint32_t ODR;			//output data register
-     volatile uint32_t BSSR;			//bit set/reset register
-     volatile uint32_t LCKR;			//port config lock register
+     volatile uint32_t BSSR;		//bit set/reset register
+     volatile uint32_t LCKR;		//port config lock register
      volatile uint32_t AFRL; 		//alternate function low register
-     volatile uint32_t AFRH;			//alternate function high register
+     volatile uint32_t AFRH;		//alternate function high register
  
  }GPIOx_MapR_t;
  
@@ -195,7 +195,7 @@
  #define GPIOE 						((GPIOx_MapR_t*) GPIOE_BASEADDR)
  #define GPIOH 						((GPIOx_MapR_t*) GPIOH_BASEADDR)
  
- #define RCC							((RCC_Map_t *) RCC_BASEADDR)
+ #define RCC						((RCC_Map_t *) RCC_BASEADDR)
  
  // clock enable for GPIOx
  #define GPIOA_CLK_EN()				((RCC->RCC_AHB1ENR) |= (1 << 0))
@@ -206,18 +206,18 @@
  #define GPIOH_CLK_EN()				((RCC->RCC_AHB1ENR) |= (1 << 7))
  
  // clock disable for GPIOx
- #define GPIOA_CLK_DIS()				((RCC->RCC_AHB1ENR) &= ~(1 << 0))
- #define GPIOB_CLK_DIS()				((RCC->RCC_AHB1ENR) &= ~(1 << 1))
- #define GPIOC_CLK_DIS()				((RCC->RCC_AHB1ENR) &= ~(1 << 2))
- #define GPIOD_CLK_DIS()				((RCC->RCC_AHB1ENR) &= ~(1 << 3))
- #define GPIOE_CLK_DIS()				((RCC->RCC_AHB1ENR) &= ~(1 << 4))
- #define GPIOH_CLK_DIS()				((RCC->RCC_AHB1ENR) &= ~(1 << 7))
+ #define GPIOA_CLK_DIS()			((RCC->RCC_AHB1ENR) &= ~(1 << 0))
+ #define GPIOB_CLK_DIS()			((RCC->RCC_AHB1ENR) &= ~(1 << 1))
+ #define GPIOC_CLK_DIS()			((RCC->RCC_AHB1ENR) &= ~(1 << 2))
+ #define GPIOD_CLK_DIS()			((RCC->RCC_AHB1ENR) &= ~(1 << 3))
+ #define GPIOE_CLK_DIS()			((RCC->RCC_AHB1ENR) &= ~(1 << 4))
+ #define GPIOH_CLK_DIS()			((RCC->RCC_AHB1ENR) &= ~(1 << 7))
  
  //clock enable for USART
  
- #define USART2_CLK_EN()				((RCC->RCC_APB1ENR) |= (1 << 17))
- #define USART1_CLK_EN()				((RCC->RCC_APB2ENR) |= (1 << 4))
- #define USART6_CLK_EN()				((RCC->RCC_APB2ENR) |= (1 << 5))
+ #define USART2_CLK_EN()			((RCC->RCC_APB1ENR) |= (1 << 17))
+ #define USART1_CLK_EN()			((RCC->RCC_APB2ENR) |= (1 << 4))
+ #define USART6_CLK_EN()			((RCC->RCC_APB2ENR) |= (1 << 5))
  
  
  //clock enable for I2C
@@ -236,9 +236,9 @@
  
  
  // reset the gpio port config using RCC reset register
- #define RST_GPIOA()					((RCC->RCC_AHB1RSTR) |= (1 << 0))
- #define RST_GPIOB()					((RCC->RCC_AHB1RSTR) |= (1 << 1))
- #define RST_GPIOC()					((RCC->RCC_AHB1RSTR) |= (1 << 2))
- #define RST_GPIOD()					((RCC->RCC_AHB1RSTR) |= (1 << 3))
- #define RST_GPIOE()					((RCC->RCC_AHB1RSTR) |= (1 << 4))
- #define RST_GPIOH()					((RCC->RCC_AHB1RSTR) |= (1 << 7))
+ #define RST_GPIOA()				do{((RCC->RCC_AHB1RSTR) |= (1 << 0)); ((RCC->RCC_AHB1RSTR) &= ~(1 << 0));} while(0)
+ #define RST_GPIOB()				do{((RCC->RCC_AHB1RSTR) |= (1 << 1)); ((RCC->RCC_AHB1RSTR) &= ~(1 << 1));} while(0)
+ #define RST_GPIOC()				do{((RCC->RCC_AHB1RSTR) |= (1 << 2)); ((RCC->RCC_AHB1RSTR) &= ~(1 << 2));} while(0)
+ #define RST_GPIOD()				do{((RCC->RCC_AHB1RSTR) |= (1 << 3)); ((RCC->RCC_AHB1RSTR) &= ~(1 << 3));} while(0)
+ #define RST_GPIOE()				do{((RCC->RCC_AHB1RSTR) |= (1 << 4)); ((RCC->RCC_AHB1RSTR) &= ~(1 << 4));} while(0)
+ #define RST_GPIOH()				do{((RCC->RCC_AHB1RSTR) |= (1 << 7)); ((RCC->RCC_AHB1RSTR) &= ~(1 << 7));} while(0)
