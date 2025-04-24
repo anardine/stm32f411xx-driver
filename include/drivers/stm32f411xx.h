@@ -242,3 +242,57 @@
  #define RST_GPIOD()				do{((RCC->RCC_AHB1RSTR) |= (1 << 3)); ((RCC->RCC_AHB1RSTR) &= ~(1 << 3));} while(0)
  #define RST_GPIOE()				do{((RCC->RCC_AHB1RSTR) |= (1 << 4)); ((RCC->RCC_AHB1RSTR) &= ~(1 << 4));} while(0)
  #define RST_GPIOH()				do{((RCC->RCC_AHB1RSTR) |= (1 << 7)); ((RCC->RCC_AHB1RSTR) &= ~(1 << 7));} while(0)
+
+ //Define GPIO operations
+ #define GPIO_MODE_INPUT            0U
+ #define GPIO_MODE_OUTPUT           1U
+ #define GPIO_MODE_AF               2U
+ #define GPIO_MODE_ANALOG           3U
+
+ #define GPIO_OTYPE_PP              0U
+ #define GPIO_OTYPE_OD              1U
+
+ #define GPIO_OSPEED_LOW            0U
+ #define GPIO_OSPEED_MED            1U
+ #define GPIO_OSPEED_FAST           2U
+ #define GPIO_OSPEED_HIGH           3U
+
+ #define GPIO_PUPD_OFF              0U
+ #define GPIO_PUPD_PU               1U
+ #define GPIO_PUPD_PD               2U
+
+ // Define GPIO Alternate Function Low (AFL) values
+#define GPIO_AFL_AF0   0x0U 
+#define GPIO_AFL_AF1   0x1U 
+#define GPIO_AFL_AF2   0x2U 
+#define GPIO_AFL_AF3   0x3U 
+#define GPIO_AFL_AF4   0x4U 
+#define GPIO_AFL_AF5   0x5U 
+#define GPIO_AFL_AF6   0x6U 
+#define GPIO_AFL_AF7   0x7U 
+#define GPIO_AFL_AF8   0x8U 
+#define GPIO_AFL_AF9   0x9U 
+#define GPIO_AFL_AF10  0xAU 
+#define GPIO_AFL_AF11  0xBU 
+#define GPIO_AFL_AF12  0xCU 
+#define GPIO_AFL_AF13  0xDU 
+#define GPIO_AFL_AF14  0xEU 
+#define GPIO_AFL_AF15  0xFU 
+
+// Define GPIO Alternate Function High (AFH) values
+#define GPIO_AFH_AF0   0x0U  
+#define GPIO_AFH_AF1   0x1U  
+#define GPIO_AFH_AF2   0x2U  
+#define GPIO_AFH_AF3   0x3U  
+#define GPIO_AFH_AF4   0x4U  
+#define GPIO_AFH_AF5   0x5U  
+#define GPIO_AFH_AF6   0x6U  
+#define GPIO_AFH_AF7   0x7U  
+#define GPIO_AFH_AF8   0x8U  
+#define GPIO_AFH_AF9   0x9U  
+#define GPIO_AFH_AF10  0xAU 
+#define GPIO_AFH_AF11  0xBU 
+#define GPIO_AFH_AF12  0xCU
+#define GPIO_AFH_AF13  0xDU
+#define GPIO_AFH_AF14  0xEU  
+#define GPIO_AFH_AF15  0xFU  
