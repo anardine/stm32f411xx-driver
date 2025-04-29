@@ -33,11 +33,24 @@
     GPIO_PerClockControl(ledHandler.pGPIOx, ENABLE);
 
     GPIO_Init(&ledHandler);
+
+  // User button located at PC13. Should only tunr the LED on when pressed.
+  GPIO_Handle_t buttonHandler;
+
+  buttonHandler.pGPIOx = GPIOC;
+  buttonHandler.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_INPUT;
+  buttonHandler.GPIO_PinConfig.GPIO_PinNumber = 13;
+  
+  GPIO_PerClockControl(buttonHandler.pGPIOx, ENABLE);
+  
+  GPIO_Init(&buttonHandler);
+
+
   while (1) {
-    for (int i = 0; i < 1000000; i++);
-    GPIO_WriteToOutputPin(ledHandler.pGPIOx, ledHandler.GPIO_PinConfig.GPIO_PinNumber, ENABLE);
-    for (int i = 0; i < 1000000; i++);
-    GPIO_WriteToOutputPin(ledHandler.pGPIOx, ledHandler.GPIO_PinConfig.GPIO_PinNumber, DISABLE);
+    if (GPIO_ReadFromInputPin(buttonHandler.pGPIOx,13))
+    {
+      GPIO_WriteToOutputPin(ledHandler.pGPIOx, ledHandler.GPIO_PinConfig.GPIO_PinNumber, ENABLE);   
+    }
   }
-     return 0;
+  return 0;
  }

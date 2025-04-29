@@ -177,12 +177,8 @@
   * */
  uint8_t GPIO_ReadFromInputPin(GPIOx_MapR_t *pGPIOx, uint8_t pinNumber) {
     
-    uint8_t inputMode = (pGPIOx->MODER >> pinNumber*2);
-    inputMode &= (3 << 0); // check to see if there's anything stored in MODER other than 0
     int8_t x = (pGPIOx->IDR >> pinNumber); 
-    if (inputMode == 0) { // proceeds only if there's nothing ser in MODER (which is then the result of 00)
     x &= (1 << 0); 
-    }
    return x;
  }
 
