@@ -17,23 +17,23 @@
  
  // keep all the base addresses of the microcontroller
  
- #define FLASH_BASEADDR				0x08000000U
+ #define FLASH_BASEADDR				0x08000000UL
  #define FLASH						FLASH_BASEADDR
  
- #define SRAM1_BASEADDR				0x20000000U
+ #define SRAM1_BASEADDR				0x20000000UL
  #define SRAM 						SRAM1_BASEADDR
  
- #define ROM_BASEADDR				0x1FFF0000U
+ #define ROM_BASEADDR				0x1FFF0000UL
  #define ROM						ROM_BASEADDR
  
- #define OTP_BASEADDR				0x1FFF7800U
+ #define OTP_BASEADDR				0x1FFF7800UL
  
  // base addresses of each bus domains
- #define PERIPH_BASEADDR			0x40000000U
- #define APB1PERIPH_BASE			0x40000000U
- #define APB2PERIPH_BASE			0x40010000U
- #define AHB1PERIPH_BASE			0x40020000U
- #define AHB2PERIPH_BASE			0x50000000U
+ #define PERIPH_BASEADDR			0x40000000UL
+ #define APB1PERIPH_BASE			0x40000000UL
+ #define APB2PERIPH_BASE			0x40010000UL
+ #define AHB1PERIPH_BASE			0x40020000UL
+ #define AHB2PERIPH_BASE			0x50000000UL
  
  // base address for RTC Clock
  #define RTC_BASEADDR				(APB1PERIPH_BASE + 0x2800)

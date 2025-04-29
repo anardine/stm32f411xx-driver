@@ -28,16 +28,16 @@
     ledHandler.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_OUTPUT;
     ledHandler.GPIO_PinConfig.GPIO_PinNumber = 5;
     ledHandler.GPIO_PinConfig.GPIO_PinOPType = GPIO_OTYPE_PP;
+    ledHandler.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_PUPD_PD;
 
     GPIO_PerClockControl(ledHandler.pGPIOx, ENABLE);
 
-    while (1)
-    {
-      for(int32_t i = 0; i < 3000000; i++);
-      GPIO_WriteToOutputPin(ledHandler.pGPIOx, ledHandler.GPIO_PinConfig.GPIO_PinNumber, ENABLE);
-      for(int32_t i = 0; i < 3000000; i++);
-      GPIO_WriteToOutputPin(ledHandler.pGPIOx, ledHandler.GPIO_PinConfig.GPIO_PinNumber, DISABLE);    
-    }
-    
+    GPIO_Init(&ledHandler);
+  while (1) {
+    for (int i = 0; i < 10000000; i++);
+    GPIO_WriteToOutputPin(ledHandler.pGPIOx, ledHandler.GPIO_PinConfig.GPIO_PinNumber, ENABLE);
+    for (int i = 0; i < 10000000; i++);
+    GPIO_WriteToOutputPin(ledHandler.pGPIOx, ledHandler.GPIO_PinConfig.GPIO_PinNumber, DISABLE);
+  }
      return 0;
  }

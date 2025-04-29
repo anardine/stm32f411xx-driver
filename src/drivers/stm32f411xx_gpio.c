@@ -83,17 +83,17 @@
      uint8_t PuPdPinPosition = pinToSet *2; // PullUp PullDown have 2 bit settings.
  
      //set the MODER register to the value defined at the moder definition of the Handler
-     uint8_t pinMode = pToGPIOHandle->GPIO_PinConfig.GPIO_PinMode; // can be set to 0 (input), 1 (output), 2 (Alt function) or 3 (Analog)
+     uint8_t volatile pinMode = pToGPIOHandle->GPIO_PinConfig.GPIO_PinMode; // can be set to 0 (input), 1 (output), 2 (Alt function) or 3 (Analog)
      pToGPIOHandle->pGPIOx->MODER |= ( pinMode << ModerPinPosition);
  
      //set the output type defined by the user
-     uint8_t outputType = pToGPIOHandle->GPIO_PinConfig.GPIO_PinOPType; // can be 0 (push-pull) or 1 (open-drain)
+     uint8_t volatile outputType = pToGPIOHandle->GPIO_PinConfig.GPIO_PinOPType; // can be 0 (push-pull) or 1 (open-drain)
      pToGPIOHandle->pGPIOx->OTYPER |= (outputType << pinToSet);
  
-     uint8_t pinSpeed = pToGPIOHandle->GPIO_PinConfig.GPIO_PinSpeed; // can be 0 (low), 1 (medium), 2 (fast) and 3 (high)
+     uint8_t volatile pinSpeed = pToGPIOHandle->GPIO_PinConfig.GPIO_PinSpeed; // can be 0 (low), 1 (medium), 2 (fast) and 3 (high)
      pToGPIOHandle->pGPIOx->OSPEEDR |= (pinSpeed << SpeedPinPosition);
  
-     uint8_t puPdMode = pToGPIOHandle->GPIO_PinConfig.GPIO_PinPuPdControl; // can be 0 (no pupd), 1 (up), 2 (down)
+     uint8_t volatile puPdMode = pToGPIOHandle->GPIO_PinConfig.GPIO_PinPuPdControl; // can be 0 (no pupd), 1 (up), 2 (down)
      pToGPIOHandle->pGPIOx->OSPEEDR |= (puPdMode << PuPdPinPosition);
 
      if(pToGPIOHandle->GPIO_PinConfig.GPIO_PinMode == 2) { // this defends the necessity of setting the alternate function registers only if the mode is set to alternate function
@@ -179,12 +179,11 @@
     
     uint8_t inputMode = (pGPIOx->MODER >> pinNumber*2);
     inputMode &= (3 << 0); // check to see if there's anything stored in MODER other than 0
-
-    if (inputMode == 0) { // proceeds only if there's nothing ser in MODER (which is then the result of 00)
     int8_t x = (pGPIOx->IDR >> pinNumber); 
-    x &= (1 << 0);
-   return x;
+    if (inputMode == 0) { // proceeds only if there's nothing ser in MODER (which is then the result of 00)
+    x &= (1 << 0); 
     }
+   return x;
  }
 
 
@@ -225,7 +224,7 @@
   * */
  void GPIO_WriteToOutputPin(GPIOx_MapR_t *pGPIOx, uint8_t pinNumber, uint8_t dataToWrite) {
 
-    uint8_t outputMode = (pGPIOx->MODER >> pinNumber*2); 
+    uint8_t volatile outputMode = (pGPIOx->MODER >> pinNumber*2); 
     outputMode &= (3 << 0); //check to see if there's anything stored in MODER defined as output
 
     if(outputMode == 1) { //only proceeds if MODER is set to output on pin selected
