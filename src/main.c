@@ -34,9 +34,9 @@
 
     GPIO_Init(&ledHandler);
   while (1) {
-    for (int i = 0; i < 10000000; i++);
+    for (int i = 0; i < 1000000; i++);
     GPIO_WriteToOutputPin(ledHandler.pGPIOx, ledHandler.GPIO_PinConfig.GPIO_PinNumber, ENABLE);
-    for (int i = 0; i < 10000000; i++);
+    for (int i = 0; i < 1000000; i++);
     GPIO_WriteToOutputPin(ledHandler.pGPIOx, ledHandler.GPIO_PinConfig.GPIO_PinNumber, DISABLE);
   }
      return 0;

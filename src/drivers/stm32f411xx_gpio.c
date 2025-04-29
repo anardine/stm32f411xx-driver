@@ -228,11 +228,10 @@
     outputMode &= (3 << 0); //check to see if there's anything stored in MODER defined as output
 
     if(outputMode == 1) { //only proceeds if MODER is set to output on pin selected
-    pGPIOx->ODR |= (dataToWrite << pinNumber);
+        (dataToWrite == DISABLE) ? (pGPIOx->ODR &= ~(1 << pinNumber)) : (pGPIOx->ODR |= (dataToWrite << pinNumber));
     } else {
         printf("Unable to set output register. Please set the MODER registry as output mode (01) before setting output bits");
     }
-
 
  }
 
