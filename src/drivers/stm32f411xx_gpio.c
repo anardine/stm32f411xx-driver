@@ -177,7 +177,7 @@
   * */
  uint8_t GPIO_ReadFromInputPin(GPIOx_MapR_t *pGPIOx, uint8_t pinNumber) {
     
-    int8_t x = (pGPIOx->IDR >> pinNumber); 
+    int8_t volatile x = (pGPIOx->IDR >> pinNumber); 
     x &= (1 << 0); 
    return x;
  }

@@ -49,9 +49,9 @@
   while (1) {
     if (GPIO_ReadFromInputPin(buttonHandler.pGPIOx,13))
     {
-      GPIO_WriteToOutputPin(ledHandler.pGPIOx, ledHandler.GPIO_PinConfig.GPIO_PinNumber, ENABLE);   
-    } else {
       GPIO_WriteToOutputPin(ledHandler.pGPIOx, ledHandler.GPIO_PinConfig.GPIO_PinNumber, DISABLE);   
+    } else {
+      GPIO_WriteToOutputPin(ledHandler.pGPIOx, ledHandler.GPIO_PinConfig.GPIO_PinNumber, ENABLE);   
     }
   }
   return 0;
