@@ -71,9 +71,6 @@
  // base addresses of components for the APB2 peripheral
  #define USBOTG_BASEADDR			(AHB2PERIPH_BASE + 0x0000)
  
- 
- #endif /* INC_STM32F411XX_H_ */
- 
  // Struct definition for RTC clock for all peripheral buses
  typedef struct {
      volatile uint32_t RTC_TR;
@@ -198,6 +195,13 @@
     volatile uint32_t EXTI_SWIER;
     volatile uint32_t EXTI_PR;
 } EXTI_MapR_t;
+
+typedef struct {
+    volatile uint32_t SYSCFG_MEMRMP;
+    volatile uint32_t SYSCFG_PMC;
+    volatile uint32_t SYSCFG_EXTCRx[4];
+    volatile uint32_t SYSCFG_CMPCR;
+}SYSCFG_MapR_t;
  
  //pointer definition to GPIOx Base address
  #define GPIOA 						((GPIOx_MapR_t*) GPIOA_BASEADDR)
@@ -308,3 +312,10 @@
 #define GPIO_AFH_AF13               0xDU
 #define GPIO_AFH_AF14               0xEU  
 #define GPIO_AFH_AF15               0xFU  
+
+
+
+
+
+
+#endif /* INC_STM32F411XX_H_ */
