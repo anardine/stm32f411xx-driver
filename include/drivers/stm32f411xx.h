@@ -34,6 +34,9 @@
  #define APB2PERIPH_BASE			0x40010000UL
  #define AHB1PERIPH_BASE			0x40020000UL
  #define AHB2PERIPH_BASE			0x50000000UL
+
+ // base address for EXT interrupt line
+ #define EXTI_BASEADDR              (APB2PERIPH_BASE + 0x3C00)
  
  // base address for RTC Clock
  #define RTC_BASEADDR				(APB1PERIPH_BASE + 0x2800)
@@ -63,7 +66,6 @@
  #define SPI1_BASEADDR				(APB2PERIPH_BASE + 0x3000)
  #define SPI4_BASEADDR				(APB2PERIPH_BASE + 0x3400)
  #define SPI5_BASEADDR				(APB2PERIPH_BASE + 0x5000)
- #define EXTI_BASEADDR				(APB2PERIPH_BASE + 0x3C00)
  #define SYSCONFIG_BASEADDR			(APB2PERIPH_BASE + 0x3800)
  
  // base addresses of components for the APB2 peripheral
