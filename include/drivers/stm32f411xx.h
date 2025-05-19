@@ -188,6 +188,16 @@
      volatile uint32_t I2C_TRISE;
      volatile uint32_t I2C_FRTR;
  }I2Cx_MapR_t;
+
+ // struct definition for EXTI
+ typedef struct {
+    volatile uint32_t EXTI_IMR;
+    volatile uint32_t EXTI_EMR;
+    volatile uint32_t EXTI_RTSR;
+    volatile uint32_t EXTI_FTSR;
+    volatile uint32_t EXTI_SWIER;
+    volatile uint32_t EXTI_PR;
+} EXTI_MapR_t;
  
  //pointer definition to GPIOx Base address
  #define GPIOA 						((GPIOx_MapR_t*) GPIOA_BASEADDR)
