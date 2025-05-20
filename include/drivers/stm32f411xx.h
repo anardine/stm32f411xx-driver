@@ -14,7 +14,30 @@
  #define DISABLE 					0
  #define SET						ENABLE
  #define RESET						DISABLE
+
+
+// definition of Core M4
+//------------------------------------------
+
+#define NVIC_BASEADDR               0xE000E100UL
+
+
+typedef struct {
+    volatile uint32_t NVIC_ISER[7];
+    volatile uint32_t NVIC_ICER[7];
+    volatile uint32_t NVIC_ISPR[7];
+    volatile uint32_t NVIC_IABR[7];
+    volatile uint32_t NVIC_IPR[59];
+    volatile uint32_t NVIC_STIR;
+}NVIC_MapR_t;
+
+#define NVIC                        ((NVIC_MapR_t *) NVIC_BASEADDR)
+
+
  
+// definition of STM32
+//------------------------------------------
+
  // keep all the base addresses of the microcontroller
  
  #define FLASH_BASEADDR				0x08000000UL

@@ -6,6 +6,7 @@
  */
 
  #include "drivers/stm32f411xx_gpio.h"
+ #include "drivers/stm32f411xx_intr.h"
  #include <stdio.h>
  
  
@@ -19,10 +20,9 @@
   *
   * @return				- void
   *
-  * @notes				- none
+  * @note				- none
   *
   * */
- 
  void GPIO_PerClockControl(GPIOx_MapR_t *pGPIOx, uint8_t ENorDI){
  
      if (ENorDI == ENABLE)
@@ -71,7 +71,7 @@
   *
   * @return				- void
   *
-  * @notes				- none
+  * @note				- none
   *
   * */
  void GPIO_Init(GPIO_Handle_t *pToGPIOHandle) {
@@ -163,8 +163,7 @@
 
         SYSCFG->SYSCFG_EXTCRx[exticrNumber] |= (portToSet << bitToSet); // define val according to the port received 
 
-        //enable NVIC IRQ
-        NVIC_EnableIRQ(EXTI15_10_IRQn);
+        IRQn_Handler_t IRQ_GPIO_handler = NVIC_InitIRQ(EXTI15_10_IRQn); // deixar a logica de escolher o GPIO dentro desta classe e passar o interrupt aqui
         
     }
  }
@@ -179,7 +178,7 @@
   *
   * @return				- void
   *
-  * @notes				- none
+  * @note				- none
   *
   * */
  void GPIO_DeInit(GPIOx_MapR_t *pGPIOx) {
@@ -213,7 +212,7 @@
   * 
   * @return				- 0 or 1 when data is read
   *
-  * @notes				- none
+  * @note				- none
   *
   * */
  uint8_t GPIO_ReadFromInputPin(GPIOx_MapR_t *pGPIOx, uint8_t pinNumber) {
@@ -233,7 +232,7 @@
   * 
   * @return				- the entire 32 bit value from the IDR register for a given port
   *
-  * @notes				- none
+  * @note				- none
   *
   * */
  uint32_t GPIO_ReadFromInputPort(GPIOx_MapR_t *pGPIOx) {
@@ -256,7 +255,7 @@
   * 
   * @return				- none
   *
-  * @notes				- none
+  * @note				- none
   *
   * */
  void GPIO_WriteToOutputPin(GPIOx_MapR_t *pGPIOx, uint8_t pinNumber, uint8_t dataToWrite) {
@@ -282,7 +281,7 @@
   * 
   * @return				- none
   *
-  * @notes				- none
+  * @note				- none
   *
   * */
  void GPIO_WriteToOutputPort(GPIOx_MapR_t *pGPIOx, uint32_t dataToWrite) {
@@ -303,7 +302,7 @@
   * 
   * @return				- none
   *
-  * @notes				- none
+  * @note				- none
   *
   * */
  void GPIO_ToggleOutputPin(GPIOx_MapR_t *pGPIOx, uint8_t pinNumber){

@@ -8,7 +8,7 @@
  #ifndef INC_STM32F411XX_GPIO_H_
  #define INC_STM32F411XX_GPIO_H_
  
- #include "stm32f411xx.h"
+ #include "drivers/stm32f411xx.h"
  
  typedef struct {
      uint8_t GPIO_PinNumber;
