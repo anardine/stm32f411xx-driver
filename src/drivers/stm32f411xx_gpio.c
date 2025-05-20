@@ -144,7 +144,7 @@
         // identify which is the correct port for setting the interrupt
         uint8_t portToSet;
 
-        if(pToGPIOHandle->pGPIOx == GPIOA) {
+        if(pToGPIOHandle->pGPIOx == GPIOA) { // this can be further optimized to become a macro in stm32f411xx.h file
             portToSet = 0x0;
         } else if (pToGPIOHandle->pGPIOx == GPIOB) {
             portToSet = 0x1;
