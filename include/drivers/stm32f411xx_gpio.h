@@ -17,6 +17,7 @@
      uint8_t GPIO_PinPuPdControl;
      uint8_t GPIO_PinOPType;
      uint8_t GPIO_PinAltFunMode;
+     uint8_t GPIO_isInterrupt;
  }GPIO_PinConfig_t;
  
  

@@ -126,6 +126,47 @@
             pToGPIOHandle->pGPIOx->AFRH |= (altMode << AltFuncPosition);
         }
     }
+
+    if(pToGPIOHandle->GPIO_PinConfig.GPIO_isInterrupt == 1) { // this marks the necessity of setting the interrupt registers given that the user wants to set an interrupt
+        // enable clock on SYSCFG if not enabled yet
+        RCC->RCC_APB2ENR |= (1 << 14);
+        
+        // set the interrupt mask register
+        EXTI->EXTI_IMR |= (1 << pinToSet);
+
+        //set the trigger selection register (defaulted to always Rising Edge detection)
+        EXTI->EXTI_RTSR |= (1 << pinToSet);
+
+        // defines the port of the passed pin to set the correct EXT line. This is done using the SYSCFG_EXTCR register
+        uint8_t exticrNumber = pinToSet/4;
+        uint8_t bitToSet = pinToSet%4*4;
+        
+        // identify which is the correct port for setting the interrupt
+        uint8_t portToSet;
+
+        if(pToGPIOHandle->pGPIOx == GPIOA) {
+            portToSet = 0x0;
+        } else if (pToGPIOHandle->pGPIOx == GPIOB) {
+            portToSet = 0x1;
+        } else if (pToGPIOHandle->pGPIOx == GPIOC) {
+            portToSet = 0x2;
+        } else if (pToGPIOHandle->pGPIOx == GPIOD) {
+            portToSet = 0x3;
+        } else if (pToGPIOHandle->pGPIOx == GPIOE) {
+            portToSet = 0x4;
+        } else if (pToGPIOHandle->pGPIOx == GPIOH) {
+            portToSet = 0x7;
+        } else {
+            printf("cannot open port: Unrecognized referece. Please set GPIO to be A, B, C, D, E or H");
+            portToSet = 0x0;
+        }
+
+        SYSCFG->SYSCFG_EXTCRx[exticrNumber] |= (portToSet << bitToSet); // define val according to the port received 
+
+        //enable NVIC IRQ
+        NVIC_EnableIRQ(EXTI15_10_IRQn);
+        
+    }
  }
  
  

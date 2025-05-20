@@ -40,6 +40,7 @@
   buttonHandler.pGPIOx = GPIOC;
   buttonHandler.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_INPUT;
   buttonHandler.GPIO_PinConfig.GPIO_PinNumber = 13;
+  buttonHandler.GPIO_PinConfig.GPIO_isInterrupt = 1;
   
   GPIO_PerClockControl(buttonHandler.pGPIOx, ENABLE);
   

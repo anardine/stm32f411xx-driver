@@ -71,61 +71,132 @@
  // base addresses of components for the APB2 peripheral
  #define USBOTG_BASEADDR			(AHB2PERIPH_BASE + 0x0000)
  
+typedef enum
+{
+  /******  Cortex-M4 Processor Exceptions Numbers ****************************************************************/
+  NonMaskableInt_IRQn         = -14,    /*!< 2 Non Maskable Interrupt                                          */
+  MemoryManagement_IRQn       = -12,    /*!< 4 Cortex-M4 Memory Management Interrupt                           */
+  BusFault_IRQn               = -11,    /*!< 5 Cortex-M4 Bus Fault Interrupt                                   */
+  UsageFault_IRQn             = -10,    /*!< 6 Cortex-M4 Usage Fault Interrupt                                 */
+  SVCall_IRQn                 = -5,     /*!< 11 Cortex-M4 SV Call Interrupt                                    */
+  DebugMonitor_IRQn           = -4,     /*!< 12 Cortex-M4 Debug Monitor Interrupt                              */
+  PendSV_IRQn                 = -2,     /*!< 14 Cortex-M4 Pend SV Interrupt                                    */
+  SysTick_IRQn                = -1,     /*!< 15 Cortex-M4 System Tick Interrupt                                */
+  /******  STM32 specific Interrupt Numbers **********************************************************************/
+  WWDG_IRQn                   = 0,      /*!< Window WatchDog Interrupt                                         */
+  PVD_IRQn                    = 1,      /*!< PVD through EXTI Line detection Interrupt                         */
+  TAMP_STAMP_IRQn             = 2,      /*!< Tamper and TimeStamp interrupts through the EXTI line             */
+  RTC_WKUP_IRQn               = 3,      /*!< RTC Wakeup interrupt through the EXTI line                        */
+  FLASH_IRQn                  = 4,      /*!< FLASH global Interrupt                                            */
+  RCC_IRQn                    = 5,      /*!< RCC global Interrupt                                              */
+  EXTI0_IRQn                  = 6,      /*!< EXTI Line0 Interrupt                                              */
+  EXTI1_IRQn                  = 7,      /*!< EXTI Line1 Interrupt                                              */
+  EXTI2_IRQn                  = 8,      /*!< EXTI Line2 Interrupt                                              */
+  EXTI3_IRQn                  = 9,      /*!< EXTI Line3 Interrupt                                              */
+  EXTI4_IRQn                  = 10,     /*!< EXTI Line4 Interrupt                                              */
+  DMA1_Stream0_IRQn           = 11,     /*!< DMA1 Stream 0 global Interrupt                                    */
+  DMA1_Stream1_IRQn           = 12,     /*!< DMA1 Stream 1 global Interrupt                                    */
+  DMA1_Stream2_IRQn           = 13,     /*!< DMA1 Stream 2 global Interrupt                                    */
+  DMA1_Stream3_IRQn           = 14,     /*!< DMA1 Stream 3 global Interrupt                                    */
+  DMA1_Stream4_IRQn           = 15,     /*!< DMA1 Stream 4 global Interrupt                                    */
+  DMA1_Stream5_IRQn           = 16,     /*!< DMA1 Stream 5 global Interrupt                                    */
+  DMA1_Stream6_IRQn           = 17,     /*!< DMA1 Stream 6 global Interrupt                                    */
+  ADC_IRQn                    = 18,     /*!< ADC1, ADC2 and ADC3 global Interrupts                             */
+  EXTI9_5_IRQn                = 23,     /*!< External Line[9:5] Interrupts                                     */
+  TIM1_BRK_TIM9_IRQn          = 24,     /*!< TIM1 Break interrupt and TIM9 global interrupt                    */
+  TIM1_UP_TIM10_IRQn          = 25,     /*!< TIM1 Update Interrupt and TIM10 global interrupt                  */
+  TIM1_TRG_COM_TIM11_IRQn     = 26,     /*!< TIM1 Trigger and Commutation Interrupt and TIM11 global interrupt */
+  TIM1_CC_IRQn                = 27,     /*!< TIM1 Capture Compare Interrupt                                    */
+  TIM2_IRQn                   = 28,     /*!< TIM2 global Interrupt                                             */
+  TIM3_IRQn                   = 29,     /*!< TIM3 global Interrupt                                             */
+  TIM4_IRQn                   = 30,     /*!< TIM4 global Interrupt                                             */
+  I2C1_EV_IRQn                = 31,     /*!< I2C1 Event Interrupt                                              */
+  I2C1_ER_IRQn                = 32,     /*!< I2C1 Error Interrupt                                              */
+  I2C2_EV_IRQn                = 33,     /*!< I2C2 Event Interrupt                                              */
+  I2C2_ER_IRQn                = 34,     /*!< I2C2 Error Interrupt                                              */
+  SPI1_IRQn                   = 35,     /*!< SPI1 global Interrupt                                             */
+  SPI2_IRQn                   = 36,     /*!< SPI2 global Interrupt                                             */
+  USART1_IRQn                 = 37,     /*!< USART1 global Interrupt                                           */
+  USART2_IRQn                 = 38,     /*!< USART2 global Interrupt                                           */
+  EXTI15_10_IRQn              = 40,     /*!< External Line[15:10] Interrupts                                   */
+  RTC_Alarm_IRQn              = 41,     /*!< RTC Alarm (A and B) through EXTI Line Interrupt                   */
+  OTG_FS_WKUP_IRQn            = 42,     /*!< USB OTG FS Wakeup through EXTI line interrupt                     */
+  DMA1_Stream7_IRQn           = 47,     /*!< DMA1 Stream7 Interrupt                                            */
+  SDIO_IRQn                   = 49,     /*!< SDIO global Interrupt                                             */
+  TIM5_IRQn                   = 50,     /*!< TIM5 global Interrupt                                             */
+  SPI3_IRQn                   = 51,     /*!< SPI3 global Interrupt                                             */
+  DMA2_Stream0_IRQn           = 56,     /*!< DMA2 Stream 0 global Interrupt                                    */
+  DMA2_Stream1_IRQn           = 57,     /*!< DMA2 Stream 1 global Interrupt                                    */
+  DMA2_Stream2_IRQn           = 58,     /*!< DMA2 Stream 2 global Interrupt                                    */
+  DMA2_Stream3_IRQn           = 59,     /*!< DMA2 Stream 3 global Interrupt                                    */
+  DMA2_Stream4_IRQn           = 60,     /*!< DMA2 Stream 4 global Interrupt                                    */
+  OTG_FS_IRQn                 = 67,     /*!< USB OTG FS global Interrupt                                       */
+  DMA2_Stream5_IRQn           = 68,     /*!< DMA2 Stream 5 global interrupt                                    */
+  DMA2_Stream6_IRQn           = 69,     /*!< DMA2 Stream 6 global interrupt                                    */
+  DMA2_Stream7_IRQn           = 70,     /*!< DMA2 Stream 7 global interrupt                                    */
+  USART6_IRQn                 = 71,     /*!< USART6 global interrupt                                           */
+  I2C3_EV_IRQn                = 72,     /*!< I2C3 event interrupt                                              */
+  I2C3_ER_IRQn                = 73,     /*!< I2C3 error interrupt                                              */
+  FPU_IRQn                    = 81,     /*!< FPU global interrupt                                              */
+  SPI4_IRQn                   = 84,     /*!< SPI4 global Interrupt                                             */
+  SPI5_IRQn                   = 85      /*!< SPI5 global Interrupt                                              */
+} IRQn_MapR_t;
+
  // Struct definition for RTC clock for all peripheral buses
  typedef struct {
-     volatile uint32_t RTC_TR;
-     volatile uint32_t RTC_DR;
-     volatile uint32_t RTC_CR;
-     volatile uint32_t RTC_ISR;
-     volatile uint32_t RTC_PRER;
-     volatile uint32_t RTC_WUTR;
-     volatile uint32_t RTC_CALIBR;
-     volatile uint32_t RTC_ALRMAR;
-     volatile uint32_t RTC_ALRMBR;
-     volatile uint32_t RTC_WPR;
-     volatile uint32_t RTC_SSR;
-     volatile uint32_t RTC_SHIFTR;
-     volatile uint32_t RTC_TSTR;
-     volatile uint32_t RTC_TSDR;
-     volatile uint32_t RTC_TSSSR;
-     volatile uint32_t RTC_CARLR;
-     volatile uint32_t RTC_TAFCR;
-     volatile uint32_t RTC_ALRMASSR;
-     volatile uint32_t RTC_ALRMBSSR;
-     volatile uint32_t RTC_BKP0R;
-     volatile uint32_t RTC_BKP19R;
+     volatile uint32_t RTC_TR; // time register
+     volatile uint32_t RTC_DR; // date register
+     volatile uint32_t RTC_CR; // control register
+     volatile uint32_t RTC_ISR; // initialization and status register
+     volatile uint32_t RTC_PRER; // prescaler register
+     volatile uint32_t RTC_WUTR; // wakeup timer register
+     volatile uint32_t RTC_CALIBR; // calibration register
+     volatile uint32_t RTC_ALRMAR; // alarm A register
+     volatile uint32_t RTC_ALRMBR; // alarm B register
+     volatile uint32_t RTC_WPR; // write protection register
+     volatile uint32_t RTC_SSR; // sub second register
+     volatile uint32_t RTC_SHIFTR; // shift control register
+     volatile uint32_t RTC_TSTR; // time stamp time register
+     volatile uint32_t RTC_TSDR; // time stamp date register
+     volatile uint32_t RTC_TSSSR; // time-stamp sub second register
+     volatile uint32_t RTC_CARLR; // calibration register
+     volatile uint32_t RTC_TAFCR; // tamper and alternate function configuration register
+     volatile uint32_t RTC_ALRMASSR; // alarm A sub second register
+     volatile uint32_t RTC_ALRMBSSR; // alarm B sub second register
+     volatile uint32_t RTC_BKP0R; // backup register 0
+     volatile uint32_t RTC_BKP19R; // backup register 19
  
  }RTC_MapR_t;
  
  // Struct definitopn for RCC clock for all peripheral buses
  typedef struct {
-     volatile uint32_t RCC_CR;
-     volatile uint32_t RCC_PLLCFGR;
-     volatile uint32_t RCC_CFGR;
-     volatile uint32_t RCC_CIR;
-     volatile uint32_t RCC_AHB1RSTR;
-     volatile uint32_t RCC_AHB2RSTR;
-     volatile uint32_t RCC_RESERVED1[2];
-     volatile uint32_t RCC_APB1RSTR;
-     volatile uint32_t RCC_APB2RSTR;
+     volatile uint32_t RCC_CR; // clock control register
+     volatile uint32_t RCC_PLLCFGR; // PLL configuration register
+     volatile uint32_t RCC_CFGR; // clock configuration register
+     volatile uint32_t RCC_CIR; // clock interrupt register
+     volatile uint32_t RCC_AHB1RSTR; // AHB1 peripheral reset register
+     volatile uint32_t RCC_AHB2RSTR; // AHB2 peripheral reset register  
+     volatile uint32_t RCC_RESERVED1[2]; 
+     volatile uint32_t RCC_APB1RSTR; // APB1 peripheral reset register
+     volatile uint32_t RCC_APB2RSTR; // APB2 peripheral reset register
      volatile uint32_t RCC_RESERVED2[2];
-     volatile uint32_t RCC_AHB1ENR;
-     volatile uint32_t RCC_AHB2ENR;
+     volatile uint32_t RCC_AHB1ENR; // AHB1 peripheral clock enable register
+     volatile uint32_t RCC_AHB2ENR; // AHB2 peripheral clock enable register
      volatile uint32_t RCC_RESERVED3[2];
-     volatile uint32_t RCC_APB1ENR;
-     volatile uint32_t RCC_APB2ENR;
+     volatile uint32_t RCC_APB1ENR; // APB1 peripheral clock enable register
+     volatile uint32_t RCC_APB2ENR; // APB2 peripheral clock enable register
      volatile uint32_t RCC_RESERVED4[2];
-     volatile uint32_t RCC_AHB1LPENR;
-     volatile uint32_t RCC_AHB2LPENR;
+     volatile uint32_t RCC_AHB1LPENR; // AHB1 peripheral clock enable in low power mode register
+     volatile uint32_t RCC_AHB2LPENR; // AHB2 peripheral clock enable in low power mode register
      volatile uint32_t RCC_RESERVED5[2];
-     volatile uint32_t RCC_APB1LPENR;
-     volatile uint32_t RCC_APB2LPENR;
-     volatile uint32_t RCC_BDCR;
-     volatile uint32_t RCC_CSR;
+     volatile uint32_t RCC_APB1LPENR; // APB1 peripheral clock enable in low power mode register
+     volatile uint32_t RCC_APB2LPENR; // APB2 peripheral clock enable in low power mode register
+     volatile uint32_t RCC_BDCR; // backup domain control register
+     volatile uint32_t RCC_CSR; // clock control & status register
      volatile uint32_t RCC_RESERVED6[2];
-     volatile uint32_t RCC_SSCGR;
-     volatile uint32_t RCC_PLLI2SCFGR;
-     volatile uint32_t RCC_DCKCFGR;
+     volatile uint32_t RCC_SSCGR; // spread spectrum clock generation register
+     volatile uint32_t RCC_PLLI2SCFGR; // PLLI2S configuration register
+     volatile uint32_t RCC_DCKCFGR; // dedicated clock configuration register
  
  }RCC_Map_t;
  
@@ -142,65 +213,65 @@
      volatile uint32_t BSSR;		//bit set/reset register
      volatile uint32_t LCKR;		//port config lock register
      volatile uint32_t AFRL; 		//alternate function low register
-     volatile uint32_t AFRH;		//alternate function high register
+     volatile uint32_t AFRH;        //alternate function high register
  
  }GPIOx_MapR_t;
  
  
  // struct definition for USARTx
  typedef struct {
-     volatile uint32_t USART_SR;
-     volatile uint32_t USART_DR;
-     volatile uint32_t USART_BRR;
-     volatile uint32_t USART_CR1;
-     volatile uint32_t USART_CR2;
-     volatile uint32_t USART_CR3;
-     volatile uint32_t USART_GTPR;
+     volatile uint32_t USART_SR; // status register
+     volatile uint32_t USART_DR; // data register
+     volatile uint32_t USART_BRR; // baud rate register
+     volatile uint32_t USART_CR1; // control register 1
+     volatile uint32_t USART_CR2; // control register 2
+     volatile uint32_t USART_CR3; // control register 3
+     volatile uint32_t USART_GTPR; // guard time and prescaler register
  
  }USARTx_MapR_t;
  
  // struct definition for SPIx
  typedef struct {
-     volatile uint32_t SPI_CR1;
-     volatile uint32_t SPI_SR;
-     volatile uint32_t SPI_DR;
-     volatile uint32_t SPI_CRCPR;
-     volatile uint32_t SPI_RXCRCR;
-     volatile uint32_t SPI_TXCRCR;
-     volatile uint32_t SPI_I2S_CFGR;
-     volatile uint32_t SPI_I2S_PR;
+     volatile uint32_t SPI_CR1; // control register 1
+     volatile uint32_t SPI_SR; // status register
+     volatile uint32_t SPI_DR; // data register
+     volatile uint32_t SPI_CRCPR; // CRC polynomial register
+     volatile uint32_t SPI_RXCRCR; // RX CRC register
+     volatile uint32_t SPI_TXCRCR; // TX CRC register
+     volatile uint32_t SPI_I2S_CFGR; // configuration register
+     volatile uint32_t SPI_I2S_PR; // prescaler register
  
  }SPIx_MapR_t;
  
  // struct definition for I2Cx
  typedef struct {
-     volatile uint32_t I2C_CR1;
-     volatile uint32_t I2C_CR2;
-     volatile uint32_t I2C_OAR1;
-     volatile uint32_t I2C_OAR2;
-     volatile uint32_t I2C_DR;
-     volatile uint32_t I2C_SR1;
-     volatile uint32_t I2C_SR2;
-     volatile uint32_t I2C_CCR;
-     volatile uint32_t I2C_TRISE;
-     volatile uint32_t I2C_FRTR;
+     volatile uint32_t I2C_CR1; // control register 1
+     volatile uint32_t I2C_CR2; // control register 2
+     volatile uint32_t I2C_OAR1; // own address register 1
+     volatile uint32_t I2C_OAR2; // own address register 2
+     volatile uint32_t I2C_DR; // data register
+     volatile uint32_t I2C_SR1; // status register 1
+     volatile uint32_t I2C_SR2; // status register 2
+     volatile uint32_t I2C_CCR; // clock control register
+     volatile uint32_t I2C_TRISE; // rise time register
+     volatile uint32_t I2C_FRTR; // fall time register
  }I2Cx_MapR_t;
 
  // struct definition for EXTI
  typedef struct {
-    volatile uint32_t EXTI_IMR;
-    volatile uint32_t EXTI_EMR;
-    volatile uint32_t EXTI_RTSR;
-    volatile uint32_t EXTI_FTSR;
-    volatile uint32_t EXTI_SWIER;
-    volatile uint32_t EXTI_PR;
+    volatile uint32_t EXTI_IMR; // interrupt mask register
+    volatile uint32_t EXTI_EMR; // event mask register
+    volatile uint32_t EXTI_RTSR; //rising trigger selection register
+    volatile uint32_t EXTI_FTSR; // falling trigger selection register
+    volatile uint32_t EXTI_SWIER; //software interrupt event register
+    volatile uint32_t EXTI_PR; // pending register
 } EXTI_MapR_t;
 
 typedef struct {
-    volatile uint32_t SYSCFG_MEMRMP;
-    volatile uint32_t SYSCFG_PMC;
-    volatile uint32_t SYSCFG_EXTCRx[4];
-    volatile uint32_t SYSCFG_CMPCR;
+    volatile uint32_t SYSCFG_MEMRMP; // memory remap register
+    volatile uint32_t SYSCFG_PMC; // peripheral mode config register
+    volatile uint32_t SYSCFG_EXTCRx[4]; // external interrupt config register
+    volatile uint32_t SYSCFG_CMPCR; // comparator control register
 }SYSCFG_MapR_t;
  
  //pointer definition to GPIOx Base address
@@ -212,6 +283,9 @@ typedef struct {
  #define GPIOH 						((GPIOx_MapR_t*) GPIOH_BASEADDR)
  
  #define RCC						((RCC_Map_t *) RCC_BASEADDR)
+
+ #define EXTI						((EXTI_MapR_t *) EXTI_BASEADDR)
+ #define SYSCFG					    ((SYSCFG_MapR_t *) SYSCONFIG_BASEADDR)
  
  // clock enable for GPIOx
  #define GPIOA_CLK_EN()				((RCC->RCC_AHB1ENR) |= (1 << 0))
@@ -312,9 +386,6 @@ typedef struct {
 #define GPIO_AFH_AF13               0xDU
 #define GPIO_AFH_AF14               0xEU  
 #define GPIO_AFH_AF15               0xFU  
-
-
-
 
 
 
