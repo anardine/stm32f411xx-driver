@@ -6,8 +6,8 @@
  */
 
  #include "drivers/stm32f411xx_gpio.h"
- #include "drivers/stm32f411xx_intr.h"
  #include <stdio.h>
+ #include <stdlib.h>
  
  
  /****************************************************************
@@ -23,7 +23,7 @@
   * @note				- none
   *
   * */
- void GPIO_PerClockControl(GPIOx_MapR_t *pGPIOx, uint8_t ENorDI){
+ void GPIO_PerClockControl(GPIOx_MapR_t *pGPIOx, uint8_t ENorDI) {
  
      if (ENorDI == ENABLE)
      {
@@ -126,8 +126,15 @@
             pToGPIOHandle->pGPIOx->AFRH |= (altMode << AltFuncPosition);
         }
     }
+ }
+ 
 
-    if(pToGPIOHandle->GPIO_PinConfig.GPIO_isInterrupt == 1) { // this marks the necessity of setting the interrupt registers given that the user wants to set an interrupt
+void GPIO_IRQInit(GPIO_Handle_t *pToGPIOHandler) {
+
+    uint8_t pinToSet = pToGPIOHandler->GPIO_PinConfig.GPIO_PinNumber;
+    IRQn_Handler_t *IRQ_GPIO_handler;
+
+        if(pToGPIOHandler->GPIO_PinConfig.GPIO_isInterrupt == 1) { // this marks the necessity of setting the interrupt registers given that the user wants to set an interrupt
         // enable clock on SYSCFG if not enabled yet
         RCC->RCC_APB2ENR |= (1 << 14);
         
@@ -138,36 +145,55 @@
         EXTI->EXTI_RTSR |= (1 << pinToSet);
 
         // defines the port of the passed pin to set the correct EXT line. This is done using the SYSCFG_EXTCR register
-        uint8_t exticrNumber = pinToSet/4;
+        uint8_t EXTIcrNumber = pinToSet/4;
         uint8_t bitToSet = pinToSet%4*4;
         
         // identify which is the correct port for setting the interrupt
         uint8_t portToSet;
 
-        if(pToGPIOHandle->pGPIOx == GPIOA) { // this can be further optimized to become a macro in stm32f411xx.h file
+        if(pToGPIOHandler->pGPIOx == GPIOA) { // this can be further optimized to become a macro in stm32f411xx.h file
             portToSet = 0x0;
-        } else if (pToGPIOHandle->pGPIOx == GPIOB) {
+        } else if (pToGPIOHandler->pGPIOx == GPIOB) {
             portToSet = 0x1;
-        } else if (pToGPIOHandle->pGPIOx == GPIOC) {
+        } else if (pToGPIOHandler->pGPIOx == GPIOC) {
             portToSet = 0x2;
-        } else if (pToGPIOHandle->pGPIOx == GPIOD) {
+        } else if (pToGPIOHandler->pGPIOx == GPIOD) {
             portToSet = 0x3;
-        } else if (pToGPIOHandle->pGPIOx == GPIOE) {
+        } else if (pToGPIOHandler->pGPIOx == GPIOE) {
             portToSet = 0x4;
-        } else if (pToGPIOHandle->pGPIOx == GPIOH) {
+        } else if (pToGPIOHandler->pGPIOx == GPIOH) {
             portToSet = 0x7;
         } else {
             printf("cannot open port: Unrecognized referece. Please set GPIO to be A, B, C, D, E or H");
             portToSet = 0x0;
         }
 
-        SYSCFG->SYSCFG_EXTCRx[exticrNumber] |= (portToSet << bitToSet); // define val according to the port received 
+        SYSCFG->SYSCFG_EXTCRx[EXTIcrNumber] |= (portToSet << bitToSet); // define val according to the port received 
 
-        IRQn_Handler_t IRQ_GPIO_handler = NVIC_InitIRQ(EXTI15_10_IRQn); // deixar a logica de escolher o GPIO dentro desta classe e passar o interrupt aqui
-        
+            // set the correct IRQ Handler to init the pin
+
+        if (pinToSet == 0) {
+            IRQ_GPIO_handler->IRQn = EXTI0_IRQn;
+        } else if (pinToSet == 1) {
+            IRQ_GPIO_handler->IRQn = EXTI1_IRQn;
+        } else if (pinToSet == 2) {
+            IRQ_GPIO_handler->IRQn = EXTI2_IRQn;
+        } else if (pinToSet == 3) {
+            IRQ_GPIO_handler->IRQn = EXTI3_IRQn;
+        } else if (pinToSet == 4) {
+            IRQ_GPIO_handler->IRQn = EXTI4_IRQn;
+        } else if (pinToSet >= 5 && pinToSet <= 9) {
+            IRQ_GPIO_handler->IRQn = EXTI9_5_IRQn;
+        } else if (pinToSet >= 10 && pinToSet <= 15) {
+            IRQ_GPIO_handler->IRQn = EXTI15_10_IRQn;
+        } else {
+            printf("IRQ_Hander out of range. Please check if GPIO pin is less or equal to 15");
+        }
     }
- }
- 
+
+    NVIC_SelectPos(IRQ_GPIO_handler);
+}
+
  
  /****************************************************************
   * @name				-GPIO_DeInit

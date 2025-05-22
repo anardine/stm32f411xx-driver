@@ -9,6 +9,7 @@
  #define INC_STM32F411XX_GPIO_H_
  
  #include "drivers/stm32f411xx.h"
+ #include "drivers/stm32f411xx_intr.h"
  
  typedef struct {
      uint8_t GPIO_PinNumber;
@@ -43,13 +44,9 @@
  void GPIO_WriteToOutputPort(GPIOx_MapR_t *pGPIOx, uint32_t dataToWrite); // write to the output port of that GPIO entirelly
 
  void GPIO_ToggleOutputPin(GPIOx_MapR_t *pGPIOx, uint8_t pinNumber);
+
+ void GPIO_IRQInit(GPIO_Handle_t *pToGPIOHandle);
+
  
- //Interrupts handling
- void GPIO_IRQConfig(void);
- void GPIO_IRQHandling(void);
- 
- 
- 
- 
- 
+
  #endif /* INC_STM32F411XX_GPIO_H_ */

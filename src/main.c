@@ -9,7 +9,9 @@
  */
 
  #include <stdint.h>
+ #include <stdio.h>
  #include "drivers/stm32f411xx_gpio.h"
+ #include "drivers/stm32f411xx_intr.h"
  
  #if !defined(__SOFT_FP__) && defined(__ARM_FP)
    #warning "FPU is not initialized, but the project is compiling for an FPU. Please initialize the FPU before use."
@@ -44,16 +46,12 @@
   
   GPIO_PerClockControl(buttonHandler.pGPIOx, ENABLE);
   
-  GPIO_Init(&buttonHandler);
+
+  GPIO_IRQInit(&buttonHandler);
 
 
   while (1) {
-    if (GPIO_ReadFromInputPin(buttonHandler.pGPIOx,13))
-    {
-      GPIO_WriteToOutputPin(ledHandler.pGPIOx, ledHandler.GPIO_PinConfig.GPIO_PinNumber, DISABLE);   
-    } else {
-      GPIO_WriteToOutputPin(ledHandler.pGPIOx, ledHandler.GPIO_PinConfig.GPIO_PinNumber, ENABLE);   
-    }
+
   }
   return 0;
  }
