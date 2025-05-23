@@ -129,10 +129,9 @@
  }
  
 
-void GPIO_IRQInit(GPIO_Handle_t *pToGPIOHandler) {
+void GPIO_IRQInit(GPIO_Handle_t *pToGPIOHandler,  IRQn_Handler_t *IRQ_GPIO_h) {
 
-    uint8_t pinToSet = pToGPIOHandler->GPIO_PinConfig.GPIO_PinNumber;
-    IRQn_Handler_t *IRQ_GPIO_handler;
+    volatile uint8_t pinToSet = pToGPIOHandler->GPIO_PinConfig.GPIO_PinNumber;
 
         if(pToGPIOHandler->GPIO_PinConfig.GPIO_isInterrupt == 1) { // this marks the necessity of setting the interrupt registers given that the user wants to set an interrupt
         // enable clock on SYSCFG if not enabled yet
@@ -173,25 +172,25 @@ void GPIO_IRQInit(GPIO_Handle_t *pToGPIOHandler) {
             // set the correct IRQ Handler to init the pin
 
         if (pinToSet == 0) {
-            IRQ_GPIO_handler->IRQn = EXTI0_IRQn;
+            IRQ_GPIO_h->IRQn = EXTI0_IRQn;
         } else if (pinToSet == 1) {
-            IRQ_GPIO_handler->IRQn = EXTI1_IRQn;
+            IRQ_GPIO_h->IRQn = EXTI1_IRQn;
         } else if (pinToSet == 2) {
-            IRQ_GPIO_handler->IRQn = EXTI2_IRQn;
+            IRQ_GPIO_h->IRQn = EXTI2_IRQn;
         } else if (pinToSet == 3) {
-            IRQ_GPIO_handler->IRQn = EXTI3_IRQn;
+            IRQ_GPIO_h->IRQn = EXTI3_IRQn;
         } else if (pinToSet == 4) {
-            IRQ_GPIO_handler->IRQn = EXTI4_IRQn;
+            IRQ_GPIO_h->IRQn = EXTI4_IRQn;
         } else if (pinToSet >= 5 && pinToSet <= 9) {
-            IRQ_GPIO_handler->IRQn = EXTI9_5_IRQn;
+            IRQ_GPIO_h->IRQn = EXTI9_5_IRQn;
         } else if (pinToSet >= 10 && pinToSet <= 15) {
-            IRQ_GPIO_handler->IRQn = EXTI15_10_IRQn;
+            IRQ_GPIO_h->IRQn = EXTI15_10_IRQn;
         } else {
             printf("IRQ_Hander out of range. Please check if GPIO pin is less or equal to 15");
         }
     }
 
-    NVIC_SelectPos(IRQ_GPIO_handler);
+    NVIC_SelectPos(IRQ_GPIO_h);
 }
 
  

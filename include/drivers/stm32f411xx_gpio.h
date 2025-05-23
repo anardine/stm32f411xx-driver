@@ -45,7 +45,7 @@
 
  void GPIO_ToggleOutputPin(GPIOx_MapR_t *pGPIOx, uint8_t pinNumber);
 
- void GPIO_IRQInit(GPIO_Handle_t *pToGPIOHandle);
+ void GPIO_IRQInit(GPIO_Handle_t *pToGPIOHandle,  IRQn_Handler_t *IRQ_GPIO_h);
 
  
 

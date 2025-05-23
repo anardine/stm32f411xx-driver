@@ -46,8 +46,10 @@
   
   GPIO_PerClockControl(buttonHandler.pGPIOx, ENABLE);
   
+  
+  IRQn_Handler_t IRQ_GPIO_handler[1];
 
-  GPIO_IRQInit(&buttonHandler);
+  GPIO_IRQInit(&buttonHandler, &IRQ_GPIO_handler);
 
 
   while (1) {
