@@ -193,6 +193,7 @@ void GPIO_IRQInit(GPIO_Handle_t *pToGPIOHandler,  IRQn_Handler_t *IRQ_GPIO_h) {
 
     NVIC_SelectPos(IRQ_GPIO_h);
     NVIC_PriorityIRQ(IRQ_GPIO_h, 20);
+    NVIC_EnableIRQ(IRQ_GPIO_h); // enables the NVIC
 }
 
  

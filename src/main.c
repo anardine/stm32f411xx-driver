@@ -17,13 +17,13 @@
    #warning "FPU is not initialized, but the project is compiling for an FPU. Please initialize the FPU before use."
  #endif
  
+   GPIO_Handle_t ledHandler;
+
  int main(void)
  {
 
     // working on the LED exercise with the HAL implementation
     // LD2 on PA5 for NUCLEO-F411RE
-
-    GPIO_Handle_t ledHandler;
 
     ledHandler.pGPIOx = GPIOA;
 
@@ -55,5 +55,14 @@
 
   }
   
-  return 0;
+ }
+
+void EXTI_callback(void) {
+  printf("button pressed! LED should toggle");
+  GPIO_WriteToOutputPin(&ledHandler.pGPIOx,ledHandler.GPIO_PinConfig.GPIO_PinNumber, 1);
+}
+
+ void EXTI15_10_IRQHandler(void) {
+    EXTI->EXTI_PR |= (1 << 13);
+    EXTI_callback();
  }
