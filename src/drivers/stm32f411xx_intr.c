@@ -19,22 +19,24 @@
 void NVIC_SelectPos(IRQn_Handler_t *IRQ_handler) {
 
     if (IRQ_handler->IRQn <= 31) {
-        for(int i = 0U; i < 5; i++) {
+        for(int i = 0U; i < 4; i++) {
             IRQ_handler->posArray[i] = 0; //sets all positions of the array with 0 
         }
     } else if (IRQ_handler->IRQn > 31 && IRQ_handler->IRQn <=63)
     {
-        for(int i = 0U; i < 5; i++) {
+        for(int i = 0U; i < 4; i++) {
         IRQ_handler->posArray[i] = 1; //sets all positions of the array with 1 
         }
     } else if (IRQ_handler->IRQn > 63 && IRQ_handler->IRQn <= 96)
     {
-        for(int i = 0U; i < 5; i++) {
+        for(int i = 0U; i < 4; i++) {
         IRQ_handler->posArray[i] = 2; //sets all positions of the array with 2
         }
     } else {
         printf("implementation on stm32f411xx only have 93 interrupts. Setting further NVIC positions than NVIC_2 is not requeried.");
     }
+
+    IRQ_handler->posArray[4] = IRQ_handler->IRQn/4; //set the correct priority register to be selected
 
     IRQ_handler->posArray[5] = 0; // always set the last postion to zero given there's only one location to STIR
 }
@@ -79,4 +81,24 @@ void NVIC_DisableIRQ(IRQn_Handler_t *IRQ_handler) {
     NVIC->NVIC_ICER[IRQ_handler->posArray[1]] |= (1 << bitToSet);
 
     
+}
+
+ /****************************************************************
+  * @name				-NVIC_PriorityIRQ
+  *
+  * @brief 				- This sets the NVIC priority
+  *
+  * @param[in]			- the vector table IRQ handler
+  *
+  * @return				- none
+  *
+  * @note				- none
+  *
+  * */
+void NVIC_PriorityIRQ(IRQn_Handler_t *IRQn_Handler, uint32_t priority) {
+
+    uint16_t sectionToSet = IRQn_Handler->IRQn % 4;
+
+    NVIC->NVIC_IPR[IRQn_Handler->posArray[4]] |= (priority << sectionToSet);
+
 }

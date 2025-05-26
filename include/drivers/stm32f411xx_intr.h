@@ -5,3 +5,4 @@
 void NVIC_SelectPos(IRQn_Handler_t *IRQ_handler); // select the correct position for the registry configuration for clearing set
 void NVIC_EnableIRQ(IRQn_Handler_t *IRQ_handler); // enables the interrupt on the given line
 void NVIC_DisableIRQ(IRQn_Handler_t *IRQ_handler); // disables the interrupt on the given line
+void NVIC_PriorityIRQ(IRQn_Handler_t *IRQn_Handler, uint32_t priority); // set the priority of the NVIC

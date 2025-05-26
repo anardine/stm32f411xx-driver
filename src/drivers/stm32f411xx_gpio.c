@@ -8,6 +8,7 @@
  #include "drivers/stm32f411xx_gpio.h"
  #include <stdio.h>
  #include <stdlib.h>
+
  
  
  /****************************************************************
@@ -191,6 +192,7 @@ void GPIO_IRQInit(GPIO_Handle_t *pToGPIOHandler,  IRQn_Handler_t *IRQ_GPIO_h) {
     }
 
     NVIC_SelectPos(IRQ_GPIO_h);
+    NVIC_PriorityIRQ(IRQ_GPIO_h, 20);
 }
 
  
