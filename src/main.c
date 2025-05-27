@@ -59,10 +59,13 @@
 
 void EXTI_callback(void) {
   printf("button pressed! LED should toggle");
-  GPIO_WriteToOutputPin(&ledHandler.pGPIOx,ledHandler.GPIO_PinConfig.GPIO_PinNumber, 1);
+  GPIO_WriteToOutputPin(ledHandler.pGPIOx,ledHandler.GPIO_PinConfig.GPIO_PinNumber, ENABLE);
 }
 
  void EXTI15_10_IRQHandler(void) {
-    EXTI->EXTI_PR |= (1 << 13);
+  if ((EXTI->EXTI_PR & (1<<13)) != 0) {
+    
+  EXTI->EXTI_PR |= (1 << 13);
     EXTI_callback();
+  }
  }
