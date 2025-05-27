@@ -135,15 +135,10 @@ void GPIO_IRQInit(GPIO_Handle_t *pToGPIOHandler,  IRQn_Handler_t *IRQ_GPIO_h) {
     volatile uint8_t pinToSet = pToGPIOHandler->GPIO_PinConfig.GPIO_PinNumber;
 
         if(pToGPIOHandler->GPIO_PinConfig.GPIO_isInterrupt == 1) { // this marks the necessity of setting the interrupt registers given that the user wants to set an interrupt
+               
         // enable clock on SYSCFG if not enabled yet
-        RCC->RCC_APB2ENR |= (1 << 14);
+        RCC->RCC_APB2ENR |= (1 << 14);    
         
-        // set the interrupt mask register
-        EXTI->EXTI_IMR |= (1 << pinToSet);
-
-        //set the trigger selection register (defaulted to always Rising Edge detection)
-        EXTI->EXTI_RTSR |= (1 << pinToSet);
-
         // defines the port of the passed pin to set the correct EXT line. This is done using the SYSCFG_EXTCR register
         uint8_t EXTIcrNumber = pinToSet/4;
         uint8_t bitToSet = pinToSet%4*4;
@@ -168,10 +163,15 @@ void GPIO_IRQInit(GPIO_Handle_t *pToGPIOHandler,  IRQn_Handler_t *IRQ_GPIO_h) {
             portToSet = 0x0;
         }
 
-        SYSCFG->SYSCFG_EXTCRx[EXTIcrNumber] |= (portToSet << bitToSet); // define val according to the port received 
+        SYSCFG->SYSCFG_EXTCRx[3] |= (portToSet << bitToSet); // define val according to the port received 
+        
+        // set the interrupt mask register
+        EXTI->EXTI_IMR |= (1 << pinToSet);
 
-            // set the correct IRQ Handler to init the pin
+        //set the trigger selection register (defaulted to always Rising Edge detection)
+        EXTI->EXTI_FTSR |= (1 << pinToSet);
 
+        // set the correct IRQ Handler to init the pin
         if (pinToSet == 0) {
             IRQ_GPIO_h->IRQn = EXTI0_IRQn;
         } else if (pinToSet == 1) {
@@ -191,10 +191,10 @@ void GPIO_IRQInit(GPIO_Handle_t *pToGPIOHandler,  IRQn_Handler_t *IRQ_GPIO_h) {
         }
     }
 
-    NVIC_SelectPos(IRQ_GPIO_h);
-    NVIC_PriorityIRQ(IRQ_GPIO_h, 20);
-    NVIC_EnableIRQ(IRQ_GPIO_h); // enables the NVIC
-}
+//     NVIC_SelectPos(IRQ_GPIO_h);
+//     NVIC_PriorityIRQ(IRQ_GPIO_h, 20);
+//     NVIC_EnableIRQ(IRQ_GPIO_h); // enables the NVIC
+    }
 
  
  /****************************************************************
