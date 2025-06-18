@@ -316,7 +316,13 @@ typedef struct {
 
  #define EXTI						((EXTI_MapR_t *) EXTI_BASEADDR)
  #define SYSCFG					    ((SYSCFG_MapR_t *) SYSCONFIG_BASEADDR)
- 
+
+ #define SPI1                       ((SPIx_MapR_t*) SPI1_BASEADDR)
+ #define SPI2                       ((SPIx_MapR_t*) SPI2_BASEADDR)
+ #define SPI3                       ((SPIx_MapR_t*) SPI3_BASEADDR)
+ #define SPI4                       ((SPIx_MapR_t*) SPI4_BASEADDR)
+ #define SPI5                       ((SPIx_MapR_t*) SPI5_BASEADDR)
+
  // clock enable for GPIOx
  #define GPIOA_CLK_EN()				((RCC->RCC_AHB1ENR) |= (1 << 0))
  #define GPIOB_CLK_EN()				((RCC->RCC_AHB1ENR) |= (1 << 1))
@@ -350,6 +356,8 @@ typedef struct {
  #define SPI1_CLK_EN()				((RCC->RCC_APB2ENR) |= (1 << 12))
  #define SPI2_CLK_EN()				((RCC->RCC_APB1ENR) |= (1 << 14))
  #define SPI3_CLK_EN()				((RCC->RCC_APB1ENR) |= (1 << 15))
+ #define SPI4_CLK_EN()				((RCC->RCC_APB2ENR) |= (1 << 13))
+ #define SPI5_CLK_EN()				((RCC->RCC_APB2ENR) |= (1 << 20))
  
  // clock enable for SYSCONFIG
  #define SYSCOFG_CLK_EN()			((RCC->RCC_APB2ENR) |= (1 << 14))
@@ -417,6 +425,52 @@ typedef struct {
 #define GPIO_AFH_AF14               0xEU  
 #define GPIO_AFH_AF15               0xFU  
 
+
+// Define SPI configuration values
+
+// SPI Device Modes
+#define SPI_DEVICE_MODE_SLAVE        0U
+#define SPI_DEVICE_MODE_MASTER       1U
+
+// SPI Bus Configurations
+#define SPI_BUS_CONFIG_FULL_DUPLEX   1U  // Full Duplex
+#define SPI_BUS_CONFIG_HALF_DUPLEX   2U  // Half Duplex
+#define SPI_BUS_CONFIG_SIMPLEX_RX    3U  // Simplex RX only
+
+// SPI Serial Clock Speeds (Baud Rate Prescaler)
+#define SPI_SCLK_SPEED_HALF_CLOCK    0U
+#define SPI_SCLK_SPEED_QUARTER_CLOCK 1U
+#define SPI_SCLK_SPEED_DIV8          2U
+#define SPI_SCLK_SPEED_DIV16         3U
+#define SPI_SCLK_SPEED_DIV32         4U
+#define SPI_SCLK_SPEED_DIV64         5U
+#define SPI_SCLK_SPEED_DIV128        6U
+#define SPI_SCLK_SPEED_DIV256        7U
+
+// SPI Data Frame Format
+#define SPI_DFF_8BITS                0U
+#define SPI_DFF_16BITS               1U
+
+// SPI Clock Polarity
+#define SPI_CPOL_LOW                 0U
+#define SPI_CPOL_HIGH                1U
+
+// SPI Clock Phase
+#define SPI_CPHA_FIRST_EDGE          0U
+#define SPI_CPHA_SECOND_EDGE         1U
+
+// SPI Software Slave Management
+#define SPI_SSM_DISABLE              0U
+#define SPI_SSM_ENABLE               1U
+
+// SPI Enable/Disable
+#define SPI_ENABLE                   1U
+#define SPI_DISABLE                  0U
+
+// SPI Status Flags
+#define SPI_TXE_FLAG                 (1 << 1)   // Transmit buffer empty
+#define SPI_RXNE_FLAG                (1 << 0)   // Receive buffer not empty
+#define SPI_BUSY_FLAG                (1 << 7)   // Busy flag
 
 
 #endif /* INC_STM32F411XX_H_ */
