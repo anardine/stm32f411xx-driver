@@ -53,9 +53,9 @@ void SPI_PerClockControl(SPIx_MapR_t *pSPIx, uint8_t ENorDI) {
  */
 void SPI_Init(SPI_Handle_t *pToSPIHandle) {
     
-
-    
-
+    pToSPIHandle->pSPIx->SPI_CR1 |= (0 << pToSPIHandle->GPIO_PinConfig.SPI_CPHA);
+    pToSPIHandle->pSPIx->SPI_CR1 |= (1 << pToSPIHandle->GPIO_PinConfig.SPI_CPOL);
+    pToSPIHandle->pSPIx->SPI_CR1 |= (3 << pToSPIHandle->GPIO_PinConfig.SPI_SclckSpeed);
 
 }
 
