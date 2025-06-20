@@ -6,6 +6,7 @@
  */
 
  #include "drivers/stm32f411xx_spi.h"
+ #include <stdio.h>
  
 /**
  * @brief  Enables or disables the peripheral clock for the given SPI port.
@@ -53,9 +54,33 @@ void SPI_PerClockControl(SPIx_MapR_t *pSPIx, uint8_t ENorDI) {
  */
 void SPI_Init(SPI_Handle_t *pToSPIHandle) {
     
-    pToSPIHandle->pSPIx->SPI_CR1 |= (0 << pToSPIHandle->GPIO_PinConfig.SPI_CPHA);
-    pToSPIHandle->pSPIx->SPI_CR1 |= (1 << pToSPIHandle->GPIO_PinConfig.SPI_CPOL);
-    pToSPIHandle->pSPIx->SPI_CR1 |= (3 << pToSPIHandle->GPIO_PinConfig.SPI_SclckSpeed);
+    //reset the CR1 register to default
+     pToSPIHandle->pSPIx->SPI_CR1 = 0;
+
+    // Set the SPI clock phase (CPHA) bit in CR1 register according to configuration
+    pToSPIHandle->pSPIx->SPI_CR1 |= (pToSPIHandle->SPI_PinConfig.SPI_CPHA << 0);
+    
+    // Set the SPI clock polarity (CPOL) bit in CR1 register according to configuration
+    pToSPIHandle->pSPIx->SPI_CR1 |= (pToSPIHandle->SPI_PinConfig.SPI_CPOL << 1);
+
+    // Set the SPI device mode (master/slave) bit in CR1 register according to configuration
+    pToSPIHandle->pSPIx->SPI_CR1 |= (pToSPIHandle->SPI_PinConfig.SPI_DeviceMode << 2);
+
+    //configure the device to work on full duplex, half duplex or simplex RX only
+    if ((pToSPIHandle->SPI_PinConfig.SPI_BusConfig == SPI_BUS_CONFIG_FULL_DUPLEX) || (pToSPIHandle->SPI_PinConfig.SPI_BusConfig == SPI_BUS_CONFIG_HALF_DUPLEX)) {
+        pToSPIHandle->pSPIx->SPI_CR1 |= (pToSPIHandle->SPI_PinConfig.SPI_BusConfig << 15);
+    } else if ((pToSPIHandle->SPI_PinConfig.SPI_BusConfig == SPI_BUS_CONFIG_SIMPLEX_RX)) {
+        pToSPIHandle->pSPIx->SPI_CR1 &= ~(pToSPIHandle->SPI_PinConfig.SPI_BusConfig << 15); // set bidmode to 2-line unidirectional data mode
+        pToSPIHandle->pSPIx->SPI_CR1 |= (pToSPIHandle->SPI_PinConfig.SPI_BusConfig << 10); // set Output to disabled (Receive-only mode)
+    }
+    
+    // Set the SPI serial clock speed (baud rate prescaler) bits in CR1 register according to configuration
+    pToSPIHandle->pSPIx->SPI_CR1 |= (pToSPIHandle->SPI_PinConfig.SPI_SclckSpeed << 3);
+
+    //select if the dataframe should be of 8 or 16 bits
+    pToSPIHandle->pSPIx->SPI_CR1 |= (pToSPIHandle->SPI_PinConfig.SPI_DFF << 11);
+
+    pToSPIHandle->pSPIx->SPI_CR1 |= (ENABLE << 6); // enable SPI
 
 }
 

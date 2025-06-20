@@ -28,7 +28,7 @@ typedef struct
 typedef struct 
 {
     SPIx_MapR_t *pSPIx; //holds the base addr of SPI port to witch the pin belongs
-    SPI_PinConfig_t GPIO_PinConfig; //this holds SPI pin config settings
+    SPI_PinConfig_t SPI_PinConfig; //this holds SPI pin config settings
 
 } SPI_Handle_t;
 

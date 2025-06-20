@@ -433,9 +433,9 @@ typedef struct {
 #define SPI_DEVICE_MODE_MASTER       1U
 
 // SPI Bus Configurations
-#define SPI_BUS_CONFIG_FULL_DUPLEX   1U  // Full Duplex
-#define SPI_BUS_CONFIG_HALF_DUPLEX   2U  // Half Duplex
-#define SPI_BUS_CONFIG_SIMPLEX_RX    3U  // Simplex RX only
+#define SPI_BUS_CONFIG_FULL_DUPLEX   0U  // Full Duplex
+#define SPI_BUS_CONFIG_HALF_DUPLEX   1U  // Half Duplex
+#define SPI_BUS_CONFIG_SIMPLEX_RX    1U  // Simplex RX only.
 
 // SPI Serial Clock Speeds (Baud Rate Prescaler)
 #define SPI_SCLK_SPEED_HALF_CLOCK    0U
