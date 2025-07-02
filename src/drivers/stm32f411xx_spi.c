@@ -90,7 +90,20 @@ void SPI_Init(SPI_Handle_t *pToSPIHandle) {
  * @retval None
  */
 void SPI_DeInit(SPIx_MapR_t *pSPIx) {
-    // Function implementation goes here
+    if (pSPIx == SPI1) {
+        SPI1_REG_RESET();
+    } else if (pSPIx == SPI2) {
+        SPI2_REG_RESET();
+    } else if (pSPIx == SPI3) {
+        SPI3_REG_RESET();
+    } else if (pSPIx == SPI4) {
+        SPI4_REG_RESET();
+    } else if (pSPIx == SPI5) {
+        SPI5_REG_RESET();
+    } else {
+        printf("No SPI port recognized for reset. Please review the pointer to the correct SPI port");
+    }
+
 }
 
 /**
@@ -100,8 +113,24 @@ void SPI_DeInit(SPIx_MapR_t *pSPIx) {
  * @param  Length: Number of bytes to send.
  * @retval None
  */
-void SPI_SendData(SPIx_MapR_t *pSPIx, uint8_t *pToTrBuffer, uint32_t Length) {
-    // Function implementation goes here
+void SPI_SendData(SPIx_MapR_t *pSPIx, uint8_t *pToTrBuffer, uint32_t Length) { // review code logic implementation
+    while (Length > 0) {
+        // Wait until TXE (Transmit buffer empty) flag is set
+        while (!(pSPIx->SPI_SR & (1 << 1)));
+
+        // Check DFF (Data Frame Format) bit to determine 8 or 16 bit data frame
+        if (pSPIx->SPI_CR1 & (1 << 11)) {
+            // 16-bit DFF
+            pSPIx->SPI_DR = *((uint16_t *)pToTrBuffer);
+            pToTrBuffer += 2;
+            Length -= 2;
+        } else {
+            // 8-bit DFF
+            pSPIx->SPI_DR = *pToTrBuffer;
+            pToTrBuffer++;
+            Length--;
+        }
+    }
 }
 
 /**
@@ -111,8 +140,24 @@ void SPI_SendData(SPIx_MapR_t *pSPIx, uint8_t *pToTrBuffer, uint32_t Length) {
  * @param  Length: Number of bytes to receive.
  * @retval None
  */
-void SPI_ReceiveData(SPIx_MapR_t *pSPIx, uint8_t *pToRrBuffer, uint32_t Length) {
-    // Function implementation goes here
+void SPI_ReceiveData(SPIx_MapR_t *pSPIx, uint8_t *pToRrBuffer, uint32_t Length) { // review code logic implementation
+    while (Length > 0) {
+        // Wait until RXNE (Receive buffer not empty) flag is set
+        while (!(pSPIx->SPI_SR & (1 << 0)));
+
+        // Check DFF (Data Frame Format) bit to determine 8 or 16 bit data frame
+        if (pSPIx->SPI_CR1 & (1 << 11)) {
+            // 16-bit DFF
+            *((uint16_t *)pToRrBuffer) = (uint16_t)pSPIx->SPI_DR;
+            pToRrBuffer += 2;
+            Length -= 2;
+        } else {
+            // 8-bit DFF
+            *pToRrBuffer = (uint8_t)pSPIx->SPI_DR;
+            pToRrBuffer++;
+            Length--;
+        }
+    }
 }
 
 /**
@@ -121,7 +166,6 @@ void SPI_ReceiveData(SPIx_MapR_t *pSPIx, uint8_t *pToRrBuffer, uint32_t Length) 
  * @param  IRQ_SPI_h: Pointer to the IRQ handler structure.
  * @retval None
  */
-void SPI_IRQInit(SPI_Handle_t *pToSPIHandle, IRQn_Handler_t *IRQ_SPI_h) {
-    // Function implementation goes here
+void SPI_IRQInit(SPI_Handle_t *pToSPIHandle, IRQn_Handler_t *IRQ_SPI_h) { 
 }
 

@@ -371,6 +371,23 @@ typedef struct {
  #define RST_GPIOE()				do{((RCC->RCC_AHB1RSTR) |= (1 << 4)); ((RCC->RCC_AHB1RSTR) &= ~(1 << 4));} while(0)
  #define RST_GPIOH()				do{((RCC->RCC_AHB1RSTR) |= (1 << 7)); ((RCC->RCC_AHB1RSTR) &= ~(1 << 7));} while(0)
 
+//reset all the SPI registers using RCC reset
+#define SPI1_REG_RESET()            do{ (RCC->RCC_APB2RSTR |= (1 << 12)); (RCC->RCC_APB2RSTR &= ~(1 << 12)); }while(0)
+#define SPI2_REG_RESET()            do{ (RCC->RCC_APB1RSTR |= (1 << 14)); (RCC->RCC_APB1RSTR &= ~(1 << 14)); }while(0)
+#define SPI3_REG_RESET()            do{ (RCC->RCC_APB1RSTR |= (1 << 15)); (RCC->RCC_APB1RSTR &= ~(1 << 15)); }while(0)
+#define SPI4_REG_RESET()            do{ (RCC->RCC_APB2RSTR |= (1 << 13)); (RCC->RCC_APB2RSTR &= ~(1 << 13)); }while(0)
+#define SPI5_REG_RESET()            do{ (RCC->RCC_APB2RSTR |= (1 << 20)); (RCC->RCC_APB2RSTR &= ~(1 << 20)); }while(0)
+
+// reset all the I2C registers using the RCC reset
+#define I2C1_REG_RESET()             do{ (RCC->RCC_APB1RSTR |= (1 << 21)); (RCC->RCC_APB1RSTR &= ~(1 << 21)); }while(0)
+#define I2C2_REG_RESET()             do{ (RCC->RCC_APB1RSTR |= (1 << 22)); (RCC->RCC_APB1RSTR &= ~(1 << 22)); }while(0)
+#define I2C3_REG_RESET()             do{ (RCC->RCC_APB1RSTR |= (1 << 23)); (RCC->RCC_APB1RSTR &= ~(1 << 23)); }while(0)
+
+// reset all the USART register using the RCC reset
+#define USART1_REG_RESET()           do{ (RCC->RCC_APB2RSTR |= (1 << 4));  (RCC->RCC_APB2RSTR &= ~(1 << 4)); }while(0)
+#define USART2_REG_RESET()           do{ (RCC->RCC_APB1RSTR |= (1 << 17)); (RCC->RCC_APB1RSTR &= ~(1 << 17)); }while(0)
+#define USART6_REG_RESET()           do{ (RCC->RCC_APB2RSTR |= (1 << 5));  (RCC->RCC_APB2RSTR &= ~(1 << 5)); }while(0)
+
  //Define GPIO operations
  #define GPIO_MODE_INPUT            0U
  #define GPIO_MODE_OUTPUT           1U
