@@ -113,12 +113,14 @@ void SPI_DeInit(SPIx_MapR_t *pSPIx) {
  * @param  Length: Number of bytes to send.
  * @retval None
  */
-void SPI_SendData(SPIx_MapR_t *pSPIx, uint8_t *pToTrBuffer, uint32_t Length) { // review code logic implementation
+void SPI_SendData(SPIx_MapR_t *pSPIx, uint8_t *pToTrBuffer, uint32_t Length) {
     while (Length > 0) {
         // Wait until TXE (Transmit buffer empty) flag is set
         while (!(pSPIx->SPI_SR & (1 << 1)));
 
         // Check DFF (Data Frame Format) bit to determine 8 or 16 bit data frame
+
+        // A write to the data register will write into the Tx buffer and a read from the data register will return the value held in the Rx buffer.
         if (pSPIx->SPI_CR1 & (1 << 11)) {
             // 16-bit DFF
             pSPIx->SPI_DR = *((uint16_t *)pToTrBuffer);

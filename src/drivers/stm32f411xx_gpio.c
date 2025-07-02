@@ -76,6 +76,8 @@
   *
   * */
  void GPIO_Init(GPIO_Handle_t *pToGPIOHandle) {
+
+    GPIO_PerClockControl(pToGPIOHandle->pGPIOx, ENABLE);
  
      // identify what is the pin number that the user wants to set
      uint8_t pinToSet = pToGPIOHandle->GPIO_PinConfig.GPIO_PinNumber;
