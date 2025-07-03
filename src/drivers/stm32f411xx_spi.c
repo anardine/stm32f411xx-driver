@@ -84,12 +84,25 @@ void SPI_Init(SPI_Handle_t *pToSPIHandle) {
 
 }
 
+/**
+ * @brief  Enable the SPI peripheral.
+ * @param  pSPIx: Pointer to the SPI peripheral base address.
+ * @retval None
+ */
 void SPI_Enable(SPI_Handle_t *pToSPIHandle) {
+
+    // For convinience, this enables SSOE for STM32 being always the master. This needs to be changed if the STM32 will act as a Slave on any project.
+    pToSPIHandle->pSPIx->SPI_CR2 |= (ENABLE << 2);
+
 
     pToSPIHandle->pSPIx->SPI_CR1 |= (ENABLE << 6); // enable SPI
 }
 
-
+/**
+ * @brief  Disables the SPI peripheral
+ * @param  pSPIx: Pointer to the SPI peripheral base address.
+ * @retval None
+ */
 void SPI_Disable(SPI_Handle_t *pToSPIHandle) {
 
     pToSPIHandle->pSPIx->SPI_CR1 & ~(ENABLE << 6); // disable SPI
@@ -121,11 +134,11 @@ void SPI_DeInit(SPIx_MapR_t *pSPIx) {
 /**
  * @brief  Sends data over SPI.
  * @param  pSPIx: Pointer to the SPI peripheral base address.
- * @param  pToTrBuffer: Pointer to the transmit buffer.
+ * @param  pToTrData: Pointer to the transmit buffer.
  * @param  Length: Number of bytes to send.
  * @retval None
  */
-void SPI_SendData(SPIx_MapR_t *pSPIx, uint8_t *pToTrBuffer, uint32_t Length) {
+void SPI_SendData(SPIx_MapR_t *pSPIx, uint8_t *pToTrData, uint32_t Length) {
     while (Length > 0) {
         // Wait until TXE (Transmit buffer empty) flag is set
         while (!(pSPIx->SPI_SR & (1 << 1)));
@@ -135,13 +148,13 @@ void SPI_SendData(SPIx_MapR_t *pSPIx, uint8_t *pToTrBuffer, uint32_t Length) {
         // A write to the data register will write into the Tx buffer and a read from the data register will return the value held in the Rx buffer.
         if (pSPIx->SPI_CR1 & (1 << 11)) {
             // 16-bit DFF
-            pSPIx->SPI_DR = *((uint16_t *)pToTrBuffer);
-            pToTrBuffer += 2;
+            pSPIx->SPI_DR = *((uint16_t *)pToTrData);
+            pToTrData += 2;
             Length -= 2;
         } else {
             // 8-bit DFF
-            pSPIx->SPI_DR = *pToTrBuffer;
-            pToTrBuffer++;
+            pSPIx->SPI_DR = *pToTrData;
+            pToTrData++;
             Length--;
         }
     }

@@ -263,6 +263,7 @@ typedef struct {
  // struct definition for SPIx
  typedef struct {
      volatile uint32_t SPI_CR1; // control register 1
+     volatile uint32_t SPI_CR2; // control register 2
      volatile uint32_t SPI_SR; // status register
      volatile uint32_t SPI_DR; // data register
      volatile uint32_t SPI_CRCPR; // CRC polynomial register
