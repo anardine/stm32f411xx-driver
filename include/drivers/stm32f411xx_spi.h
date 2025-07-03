@@ -39,6 +39,10 @@ typedef struct
  
  void SPI_DeInit(SPIx_MapR_t *pSPIx); // resets all data from a specific SPI port
 
+ void SPI_Enable(SPI_Handle_t *pToSPIHandle); // Enables the specified SPI peripheral.
+
+ void SPI_Disable(SPI_Handle_t *pToSPIHandle); // Disables the specified SPI peripheral.
+
 void SPI_SendData(SPIx_MapR_t *pSPIx, uint8_t *pToTrBuffer, uint32_t Length); 
 
 void SPI_ReceiveData(SPIx_MapR_t *pSPIx, uint8_t *pToRrBuffer, uint32_t Length);

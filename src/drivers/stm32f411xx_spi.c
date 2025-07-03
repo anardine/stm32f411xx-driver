@@ -53,6 +53,8 @@ void SPI_PerClockControl(SPIx_MapR_t *pSPIx, uint8_t ENorDI) {
  * @retval None
  */
 void SPI_Init(SPI_Handle_t *pToSPIHandle) {
+
+    SPI_PerClockControl(pToSPIHandle->pSPIx, ENABLE);
     
     //reset the CR1 register to default
      pToSPIHandle->pSPIx->SPI_CR1 = 0;
@@ -80,7 +82,17 @@ void SPI_Init(SPI_Handle_t *pToSPIHandle) {
     //select if the dataframe should be of 8 or 16 bits
     pToSPIHandle->pSPIx->SPI_CR1 |= (pToSPIHandle->SPI_PinConfig.SPI_DFF << 11);
 
+}
+
+void SPI_Enable(SPI_Handle_t *pToSPIHandle) {
+
     pToSPIHandle->pSPIx->SPI_CR1 |= (ENABLE << 6); // enable SPI
+}
+
+
+void SPI_Disable(SPI_Handle_t *pToSPIHandle) {
+
+    pToSPIHandle->pSPIx->SPI_CR1 & ~(ENABLE << 6); // disable SPI
 
 }
 
