@@ -105,7 +105,7 @@ void SPI_Enable(SPI_Handle_t *pToSPIHandle) {
  */
 void SPI_Disable(SPI_Handle_t *pToSPIHandle) {
 
-    while (((pToSPIHandle->pSPIx->SPI_SR & (1 << 7)) >> 7) == 1) // this can lock the application if the BSY flag is never cleared for some reason
+    while (((pToSPIHandle->pSPIx->SPI_SR & SPI_BUSY_FLAG) >> 7) == 1) // this can lock the application if the BSY flag is never cleared for some reason
     {
         printf("SPI is busy in communication or Tx buffer is not empty. Termination will happen when BSY is cleared");
     }
