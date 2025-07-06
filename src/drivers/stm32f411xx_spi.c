@@ -105,12 +105,12 @@ void SPI_Enable(SPI_Handle_t *pToSPIHandle) {
  */
 void SPI_Disable(SPI_Handle_t *pToSPIHandle) {
 
-    while (((pToSPIHandle->pSPIx->SPI_SR & SPI_BUSY_FLAG) >> 7) == 1) // this can lock the application if the BSY flag is never cleared for some reason
+    while (pToSPIHandle->pSPIx->SPI_SR & SPI_BUSY_FLAG) // this can lock the application if the BSY flag is never cleared for some reason
     {
         printf("SPI is busy in communication or Tx buffer is not empty. Termination will happen when BSY is cleared");
     }
 
-    pToSPIHandle->pSPIx->SPI_CR1 & ~(ENABLE << 6); // disable SPI
+    pToSPIHandle->pSPIx->SPI_CR1 &= ~(ENABLE << 6); // disable SPI
 
 }
 
@@ -146,7 +146,9 @@ void SPI_DeInit(SPIx_MapR_t *pSPIx) {
 void SPI_SendData(SPIx_MapR_t *pSPIx, uint8_t *pToTrData, uint32_t Length) {
     while (Length > 0) {
         // Wait until TXE (Transmit buffer empty) flag is set
-        while (!(pSPIx->SPI_SR & (1 << 1)));
+        while (!(pSPIx->SPI_SR & (1 << 1))) {
+            printf("SPI is busy in communication or Tx buffer is not empty. Sending data will be resumed when TXE is cleared");
+        }
 
         // Check DFF (Data Frame Format) bit to determine 8 or 16 bit data frame
 
@@ -175,7 +177,9 @@ void SPI_SendData(SPIx_MapR_t *pSPIx, uint8_t *pToTrData, uint32_t Length) {
 void SPI_ReceiveData(SPIx_MapR_t *pSPIx, uint8_t *pToRrBuffer, uint32_t Length) { // review code logic implementation
     while (Length > 0) {
         // Wait until RXNE (Receive buffer not empty) flag is set
-        while (!(pSPIx->SPI_SR & (1 << 0)));
+        while (!(pSPIx->SPI_SR & (1 << 0))) {
+            printf("SPI is busy in communication or Rx buffer is not empty. Receiving data will be resumed when RXNE is cleared");
+        }
 
         // Check DFF (Data Frame Format) bit to determine 8 or 16 bit data frame
         if (pSPIx->SPI_CR1 & (1 << 11)) {

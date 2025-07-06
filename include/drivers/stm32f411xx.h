@@ -285,7 +285,7 @@ typedef struct {
      volatile uint32_t I2C_SR2; // status register 2
      volatile uint32_t I2C_CCR; // clock control register
      volatile uint32_t I2C_TRISE; // rise time register
-     volatile uint32_t I2C_FRTR; // fall time register
+     volatile uint32_t I2C_FLTR; // fall time register
  }I2Cx_MapR_t;
 
  // struct definition for EXTI
@@ -324,6 +324,11 @@ typedef struct {
  #define SPI4                       ((SPIx_MapR_t*) SPI4_BASEADDR)
  #define SPI5                       ((SPIx_MapR_t*) SPI5_BASEADDR)
 
+
+#define I2C1                       ((I2Cx_MapR_t*) I2C1_BASEADDR)
+#define I2C2                       ((I2Cx_MapR_t*) I2C2_BASEADDR)
+#define I2C3                       ((I2Cx_MapR_t*) I2C3_BASEADDR)
+
  // clock enable for GPIOx
  #define GPIOA_CLK_EN()				((RCC->RCC_AHB1ENR) |= (1 << 0))
  #define GPIOB_CLK_EN()				((RCC->RCC_AHB1ENR) |= (1 << 1))
@@ -359,6 +364,13 @@ typedef struct {
  #define SPI3_CLK_EN()				((RCC->RCC_APB1ENR) |= (1 << 15))
  #define SPI4_CLK_EN()				((RCC->RCC_APB2ENR) |= (1 << 13))
  #define SPI5_CLK_EN()				((RCC->RCC_APB2ENR) |= (1 << 20))
+
+  // clock disable for SPI
+ #define SPI1_CLK_DIS()				((RCC->RCC_APB2ENR) &= ~(1 << 12))
+ #define SPI2_CLK_DIS()				((RCC->RCC_APB1ENR) &= ~(1 << 14))
+ #define SPI3_CLK_DIS()				((RCC->RCC_APB1ENR) &= ~(1 << 15))
+ #define SPI4_CLK_DIS()				((RCC->RCC_APB2ENR) &= ~(1 << 13))
+ #define SPI5_CLK_DIS()				((RCC->RCC_APB2ENR) &= ~(1 << 20))
  
  // clock enable for SYSCONFIG
  #define SYSCOFG_CLK_EN()			((RCC->RCC_APB2ENR) |= (1 << 14))
@@ -489,6 +501,23 @@ typedef struct {
 #define SPI_TXE_FLAG                 (1 << 1)   // Transmit buffer empty
 #define SPI_RXNE_FLAG                (1 << 0)   // Receive buffer not empty
 #define SPI_BUSY_FLAG                (1 << 7)   // Busy flag
+
+
+// Define I2C configuration values
+
+#define I2C_FLAG_TXE                 (1 << 7)   // Data register empty (transmit)
+#define I2C_FLAG_RXNE                (1 << 6)   // Data register not empty (receive)
+#define I2C_FLAG_SB                  (1 << 0)   // Start bit (master mode)
+#define I2C_FLAG_ADDR                (1 << 1)   // Address sent (master) / matched (slave)
+#define I2C_FLAG_BTF                 (1 << 2)   // Byte transfer finished
+#define I2C_FLAG_STOPF               (1 << 4)   // Stop detection (slave mode)
+#define I2C_FLAG_BERR                (1 << 8)   // Bus error
+#define I2C_FLAG_ARLO                (1 << 9)   // Arbitration lost
+#define I2C_FLAG_AF                  (1 << 10)  // Acknowledge failure
+#define I2C_FLAG_OVR                 (1 << 11)  // Overrun/Underrun
+#define I2C_FLAG_PECERR              (1 << 12)  // PEC error in reception
+#define I2C_FLAG_TIMEOUT             (1 << 14)  // Timeout or Tlow error
+#define I2C_FLAG_SMBALERT            (1 << 15)  // SMBus alert
 
 
 #endif /* INC_STM32F411XX_H_ */
