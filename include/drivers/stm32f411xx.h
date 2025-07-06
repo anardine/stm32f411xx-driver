@@ -504,20 +504,60 @@ typedef struct {
 
 
 // Define I2C configuration values
+/* I2C_CR1 Register Flags */
+#define I2C_CR1_PE                   (1 << 0)    // Peripheral Enable
+#define I2C_CR1_SMBUS                (1 << 1)    // SMBus Mode
+#define I2C_CR1_SMBTYPE              (1 << 3)    // SMBus Type
+#define I2C_CR1_ENARP                (1 << 4)    // ARP Enable
+#define I2C_CR1_ENPEC                (1 << 5)    // PEC Enable
+#define I2C_CR1_ENGC                 (1 << 6)    // General Call Enable
+#define I2C_CR1_NOSTRETCH            (1 << 7)    // Clock Stretching Disable (Slave mode)
+#define I2C_CR1_START                (1 << 8)    // Start Generation
+#define I2C_CR1_STOP                 (1 << 9)    // Stop Generation
+#define I2C_CR1_ACK                  (1 << 10)   // Acknowledge Enable
+#define I2C_CR1_POS                  (1 << 11)   // Acknowledge/PEC Position (for data reception)
+#define I2C_CR1_PEC                  (1 << 12)   // PEC Request
+#define I2C_CR1_ALERT                (1 << 13)   // SMBus Alert
+#define I2C_CR1_SWRST                (1 << 15)   // Software Reset
 
-#define I2C_FLAG_TXE                 (1 << 7)   // Data register empty (transmit)
-#define I2C_FLAG_RXNE                (1 << 6)   // Data register not empty (receive)
-#define I2C_FLAG_SB                  (1 << 0)   // Start bit (master mode)
-#define I2C_FLAG_ADDR                (1 << 1)   // Address sent (master) / matched (slave)
-#define I2C_FLAG_BTF                 (1 << 2)   // Byte transfer finished
-#define I2C_FLAG_STOPF               (1 << 4)   // Stop detection (slave mode)
-#define I2C_FLAG_BERR                (1 << 8)   // Bus error
-#define I2C_FLAG_ARLO                (1 << 9)   // Arbitration lost
-#define I2C_FLAG_AF                  (1 << 10)  // Acknowledge failure
-#define I2C_FLAG_OVR                 (1 << 11)  // Overrun/Underrun
-#define I2C_FLAG_PECERR              (1 << 12)  // PEC error in reception
-#define I2C_FLAG_TIMEOUT             (1 << 14)  // Timeout or Tlow error
-#define I2C_FLAG_SMBALERT            (1 << 15)  // SMBus alert
+/* I2C_CR2 Register Flags */
+#define I2C_CR2_FREQ_MASK            0x3F        // Peripheral Clock Frequency Mask (bits 5:0)
+#define I2C_CR2_ITERREN              (1 << 8)    // Error Interrupt Enable
+#define I2C_CR2_ITEVTEN              (1 << 9)    // Event Interrupt Enable
+#define I2C_CR2_ITBUFEN              (1 << 10)   // Buffer Interrupt Enable
+#define I2C_CR2_DMAEN                (1 << 11)   // DMA Requests Enable
+#define I2C_CR2_LAST                 (1 << 12)   // DMA Last Transfer
+
+/* I2C_SR1 Register Flags */
+#define I2C_SR1_SB                   (1 << 0)    // Start Bit (Master mode)
+#define I2C_SR1_ADDR                 (1 << 1)    // Address sent (Master) / matched (Slave)
+#define I2C_SR1_BTF                  (1 << 2)    // Byte Transfer Finished
+#define I2C_SR1_ADD10                (1 << 3)    // 10-bit header sent (Master mode)
+#define I2C_SR1_STOPF                (1 << 4)    // Stop detection (Slave mode)
+#define I2C_SR1_RXNE                 (1 << 6)    // Data Register not Empty (Receive)
+#define I2C_SR1_TXE                  (1 << 7)    // Data Register Empty (Transmit)
+#define I2C_SR1_BERR                 (1 << 8)    // Bus Error
+#define I2C_SR1_ARLO                 (1 << 9)    // Arbitration Lost
+#define I2C_SR1_AF                   (1 << 10)   // Acknowledge Failure
+#define I2C_SR1_OVR                  (1 << 11)   // Overrun/Underrun
+#define I2C_SR1_PECERR               (1 << 12)   // PEC Error in reception
+#define I2C_SR1_TIMEOUT              (1 << 14)   // Timeout or Tlow Error
+#define I2C_SR1_SMBALERT             (1 << 15)   // SMBus Alert
+
+/* I2C_SR2 Register Flags */
+#define I2C_SR2_MSL                  (1 << 0)    // Master/Slave
+#define I2C_SR2_BUSY                 (1 << 1)    // Bus Busy
+#define I2C_SR2_TRA                  (1 << 2)    // Transmitter/Receiver
+#define I2C_SR2_GENCALL              (1 << 4)    // General Call Address (Slave mode)
+#define I2C_SR2_SMBDEFAULT           (1 << 5)    // SMBus Device Default Address (Slave mode)
+#define I2C_SR2_SMBHOST              (1 << 6)    // SMBus Host Header (Slave mode)
+#define I2C_SR2_DUALF                (1 << 7)    // Dual Flag (Slave mode)
+#define I2C_SR2_PEC_MASK             (0xFF << 8) // Packet Error Checking Register (bits 15:8)
+
+/* I2C_CCR Register Flags */
+#define I2C_CCR_CCR_MASK             0x0FFF      // Clock Control Register (bits 11:0)
+#define I2C_CCR_DUTY                 (1 << 14)   // Fast Mode Duty Cycle
+#define I2C_CCR_FS                   (1 << 15)   // I2C Master Mode Selection (Standard/Fast mode)
 
 
 #endif /* INC_STM32F411XX_H_ */
