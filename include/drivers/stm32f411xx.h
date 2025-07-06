@@ -559,5 +559,13 @@ typedef struct {
 #define I2C_CCR_DUTY                 (1 << 14)   // Fast Mode Duty Cycle
 #define I2C_CCR_FS                   (1 << 15)   // I2C Master Mode Selection (Standard/Fast mode)
 
+#define I2C_SLC_SPEED_NORMAL             100000U
+#define I2C_SLC_SPEED_FAST               400000U
+
+#define I2C_ACK_ENABLE              1
+#define I2C_ACK_DISABLE             0
+
+#define I2C_DUTY_CYCLE_2            0
+#define I2C_DUTY_CYCLE_16_9         1
 
 #endif /* INC_STM32F411XX_H_ */

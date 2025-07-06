@@ -56,8 +56,9 @@ void SPI_Init(SPI_Handle_t *pToSPIHandle) {
 
     SPI_PerClockControl(pToSPIHandle->pSPIx, ENABLE);
     
-    //reset the CR1 register to default
+    //reset the CR1 and CR2 register to default
      pToSPIHandle->pSPIx->SPI_CR1 = 0;
+     pToSPIHandle->pSPIx->SPI_CR2 = 0;
 
     // Set the SPI clock phase (CPHA) bit in CR1 register according to configuration
     pToSPIHandle->pSPIx->SPI_CR1 |= (pToSPIHandle->SPI_PinConfig.SPI_CPHA << 0);
