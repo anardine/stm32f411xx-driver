@@ -57,7 +57,6 @@ void I2C_Init(I2C_Handle_t *pToI2CHandle, HSE_Clock_Handler_t *pToClockHandler) 
     pToI2CHandle->pI2Cx->I2C_CR2 = 0;
 
     // all initialization needs to happen with the perepheral disabled. 
-
     if (pToI2CHandle->pI2Cx->I2C_CR1 & ENABLE) {
 
         printf("I2C cannot be configured while enabled. Disabling I2C for init");
@@ -65,31 +64,57 @@ void I2C_Init(I2C_Handle_t *pToI2CHandle, HSE_Clock_Handler_t *pToClockHandler) 
         pToI2CHandle->pI2Cx->I2C_CR1 &= ~ (1<<0);
     } else {
 
-    // configure the mode (fast, normal etc)
     // data on the FREQ register in CR2 needs to match the same clock frequency that is on the APB bus line 
     pToI2CHandle->pI2Cx->I2C_CR1 |= (pToClockHandler->ClockConfig.ClockFreq << 0);
 
+    // configure the mode (fast, normal)
+    pToI2CHandle->pI2Cx->I2C_CCR |= (pToI2CHandle->I2C_PinConfig.I2C_Mode << I2C_CCR_FS);
 
+    // configure the speed of the serial clock (how many khz want)
+    float tpclock, thigh, tlow;
+    uint8_t ccr;
 
-    // configure the speed of the serial clock (how many khz you want)
+        if(pToI2CHandle->I2C_PinConfig.I2C_Mode == I2C_SLC_MODE_STANDARD) { // test this with different clock cycles
+            tpclock = 1/pToClockHandler->ClockConfig.ClockFreq*100000000;
+            thigh = 1/100000/2; // fixed 100k for the clock cycle which then returns a t high of 5000ns (100k/2)
+            ccr = thigh/tpclock;
 
+            //set the CCR to the register itself
+            pToI2CHandle->pI2Cx->I2C_CCR |= (ccr << 0);
+
+        } else { // in case of Fast mode
+
+            if(pToI2CHandle->I2C_PinConfig.I2C_DutyCycleForFastMode) { // this is in case Duty=1
+                tpclock = 1/pToClockHandler->ClockConfig.ClockFreq*100000000;
+                thigh = 1/pToI2CHandle->I2C_PinConfig.I2C_ClockSpeed/2/9; // this needs testing to confirm
+                ccr = thigh/tpclock;
+
+            } else { // this is in case Duty =0 
+                tpclock = 1/pToClockHandler->ClockConfig.ClockFreq*100000000;
+                thigh = 1/pToI2CHandle->I2C_PinConfig.I2C_ClockSpeed/2; // this needs testing to confirm
+                ccr = thigh/tpclock;
+
+            }
+
+            //set the CCR to the register itself
+            pToI2CHandle->pI2Cx->I2C_CCR |= (ccr << 0);
+        }
 
     // configure the device addres (only if behaving as slave)
 
 
-
     // enable the acking (disabled by default)
+    pToI2CHandle->pI2Cx->I2C_CR1 |= (I2C_CR1_ACK);
 
 
     // configure the rise time (later)
 
+
     }
-    // Enable the peripheral on CR1
 
 
-
-
-
+    // Enable the peripheral on CR1 (PE=1)
+    pToI2CHandle->pI2Cx->I2C_CR1 |= (I2C_CR1_PE);
 
 }
 

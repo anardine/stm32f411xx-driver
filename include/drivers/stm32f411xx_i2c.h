@@ -19,6 +19,7 @@ typedef struct
     volatile uint8_t I2C_DeviceAddress;
     volatile uint8_t I2C_AckControl;
     volatile uint8_t I2C_DutyCycleForFastMode;
+    volatile uint8_t I2C_Mode;
 
 }I2C_PinConfig_t;
 
