@@ -401,6 +401,26 @@ typedef struct {
 #define USART2_REG_RESET()           do{ (RCC->RCC_APB1RSTR |= (1 << 17)); (RCC->RCC_APB1RSTR &= ~(1 << 17)); }while(0)
 #define USART6_REG_RESET()           do{ (RCC->RCC_APB2RSTR |= (1 << 5));  (RCC->RCC_APB2RSTR &= ~(1 << 5)); }while(0)
 
+
+// Define all clock operations on CR1
+
+// RCC_CR register bit definitions
+#define RCC_CR_HSION                (1U << 0)   // Internal High Speed clock enable
+#define RCC_CR_HSIRDY               (1U << 1)   // Internal High Speed clock ready flag
+#define RCC_CR_HSITRIM_Pos          3U
+#define RCC_CR_HSITRIM_Msk          (0x1FU << RCC_CR_HSITRIM_Pos) // HSITRIM[4:0] bits
+#define RCC_CR_HSICAL_Pos           8U
+#define RCC_CR_HSICAL_Msk           (0xFFU << RCC_CR_HSICAL_Pos)  // HSICAL[7:0] bits
+#define RCC_CR_HSEON                (1U << 16)  // External High Speed clock enable
+#define RCC_CR_HSERDY               (1U << 17)  // External High Speed clock ready flag
+#define RCC_CR_HSEBYP               (1U << 18)  // External High Speed clock bypass
+#define RCC_CR_CSSON                (1U << 19)  // Clock Security System enable
+#define RCC_CR_PLLON                (1U << 24)  // PLL enable
+#define RCC_CR_PLLRDY               (1U << 25)  // PLL clock ready flag
+#define RCC_CR_PLLI2SON             (1U << 26)  // PLLI2S enable
+#define RCC_CR_PLLI2SRDY            (1U << 27)  // PLLI2S clock ready flag
+
+
  //Define GPIO operations
  #define GPIO_MODE_INPUT            0U
  #define GPIO_MODE_OUTPUT           1U

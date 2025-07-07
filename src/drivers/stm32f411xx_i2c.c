@@ -53,7 +53,38 @@ void I2C_Init(I2C_Handle_t *pToI2CHandle) {
     pToI2CHandle->pI2Cx->I2C_CR1 = 0;
     pToI2CHandle->pI2Cx->I2C_CR2 = 0;
 
-    // further initialization logic here
+    // all initialization needs to happen with the perepheral disabled. 
+
+    if (pToI2CHandle->pI2Cx->I2C_CR1 & ENABLE) {
+
+        printf("I2C cannot be configured while enabled. Disabling I2C for init");
+        // disable the I2C for further configuration
+        pToI2CHandle->pI2Cx->I2C_CR1 &= ~ (1<<0);
+    } else {
+
+    // configure the mode (fast, normal etc)
+    // data on the FREQ register in CR2 needs to match the same clock frequency that is on the APB bus line 
+    pToI2CHandle->pI2Cx->I2C_CR1 |= 
+
+
+    // configure the speed of the serial clock (how many khz you want)
+
+
+    // configure the device addres (only if behaving as slave)
+
+
+
+    // enable the acking (disabled by default)
+
+
+    // configure the rise time (later)
+
+    }
+    // Enable the peripheral on CR1
+
+
+
+
 
 
 }

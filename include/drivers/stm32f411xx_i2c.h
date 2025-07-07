@@ -5,8 +5,8 @@
  *      Author: anardinelli
  */
  
- #ifndef INC_STM32F411XX_SPI_H_
- #define INC_STM32F411XX_SPI_H_
+ #ifndef INC_STM32F411XX_I2C_H_
+ #define INC_STM32F411XX_I2C_H_
 
 
 #include "drivers/stm32f411xx.h"
