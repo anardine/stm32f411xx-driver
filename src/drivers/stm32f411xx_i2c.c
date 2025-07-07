@@ -45,7 +45,7 @@ void I2C_PerClockControl(I2Cx_MapR_t *pI2Cx, uint8_t ENorDI) {
  * @param  pToI2CHandle: Pointer to the I2C handle structure containing configuration info.
  * @retval None
  */
-void I2C_Init(I2C_Handle_t *pToI2CHandle) {
+void s(I2C_Handle_t *pToI2CHandle, HSE_Clock_Handler_t *pToClockHandler) {
 
     I2C_PerClockControl(pToI2CHandle->pI2Cx, ENABLE);
     
@@ -64,7 +64,14 @@ void I2C_Init(I2C_Handle_t *pToI2CHandle) {
 
     // configure the mode (fast, normal etc)
     // data on the FREQ register in CR2 needs to match the same clock frequency that is on the APB bus line 
-    pToI2CHandle->pI2Cx->I2C_CR1 |= 
+    #ifdef USE_EXTERNAL_CLOCK
+        pToI2CHandle->pI2Cx->I2C_CR1 |= (pToClockHandler->ClockConfig.ClockFreq << 0);
+    #endif
+
+    #ifdef USE_INTERNAL_CLOCK
+        pToI2CHandle->pI2Cx->I2C_CR1 |= (16 << 0);
+    #endif
+
 
 
     // configure the speed of the serial clock (how many khz you want)
