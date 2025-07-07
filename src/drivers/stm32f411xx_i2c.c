@@ -40,12 +40,15 @@ void I2C_PerClockControl(I2Cx_MapR_t *pI2Cx, uint8_t ENorDI) {
     }
 }
 
+#ifdef USE_EXTERNAL_CLOCK
+
 /**
  * @brief  Initializes the I2C peripheral with the specified settings.
  * @param  pToI2CHandle: Pointer to the I2C handle structure containing configuration info.
+ * @param  pToClockHandler: Pointer to the external clock structure
  * @retval None
  */
-void s(I2C_Handle_t *pToI2CHandle, HSE_Clock_Handler_t *pToClockHandler) {
+void I2C_Init(I2C_Handle_t *pToI2CHandle, HSE_Clock_Handler_t *pToClockHandler) {
 
     I2C_PerClockControl(pToI2CHandle->pI2Cx, ENABLE);
     
@@ -64,13 +67,7 @@ void s(I2C_Handle_t *pToI2CHandle, HSE_Clock_Handler_t *pToClockHandler) {
 
     // configure the mode (fast, normal etc)
     // data on the FREQ register in CR2 needs to match the same clock frequency that is on the APB bus line 
-    #ifdef USE_EXTERNAL_CLOCK
-        pToI2CHandle->pI2Cx->I2C_CR1 |= (pToClockHandler->ClockConfig.ClockFreq << 0);
-    #endif
-
-    #ifdef USE_INTERNAL_CLOCK
-        pToI2CHandle->pI2Cx->I2C_CR1 |= (16 << 0);
-    #endif
+    pToI2CHandle->pI2Cx->I2C_CR1 |= (pToClockHandler->ClockConfig.ClockFreq << 0);
 
 
 
@@ -95,6 +92,56 @@ void s(I2C_Handle_t *pToI2CHandle, HSE_Clock_Handler_t *pToClockHandler) {
 
 
 }
+
+#else
+
+/**
+ * @brief  Initializes the I2C peripheral with the specified settings.
+ * @param  pToI2CHandle: Pointer to the I2C handle structure containing configuration info.
+ * @retval None
+ */
+void I2C_Init(I2C_Handle_t *pToI2CHandle) {
+
+    I2C_PerClockControl(pToI2CHandle->pI2Cx, ENABLE);
+    
+    //reset the CR1 and CR2 register to default
+    pToI2CHandle->pI2Cx->I2C_CR1 = 0;
+    pToI2CHandle->pI2Cx->I2C_CR2 = 0;
+
+    // all initialization needs to happen with the perepheral disabled. 
+
+    if (pToI2CHandle->pI2Cx->I2C_CR1 & ENABLE) {
+
+        printf("I2C cannot be configured while enabled. Disabling I2C for init");
+        // disable the I2C for further configuration
+        pToI2CHandle->pI2Cx->I2C_CR1 &= ~ (1<<0);
+    } else {
+
+    // configure the mode (fast, normal etc)
+    // data on the FREQ register in CR2 needs to match the same clock frequency that is on the APB bus line 
+    pToI2CHandle->pI2Cx->I2C_CR1 |= (16 << 0);
+
+
+    // configure the speed of the serial clock (how many khz you want)
+
+
+    // configure the device addres (only if behaving as slave)
+
+
+
+    // enable the acking (disabled by default)
+
+
+    // configure the rise time (later)
+
+    }
+    // Enable the peripheral on CR1
+
+
+
+
+
+#endif
 
 /**
  * @brief  Resets all registers of the specified I2C peripheral.

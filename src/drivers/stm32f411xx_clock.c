@@ -27,19 +27,7 @@ pToClockHandler->pClock->RCC_CFGR |= (ENABLE << 0);
 // enables the clock from HSE source
 pToClockHandler->pClock->RCC_CR |= RCC_CR_HSEON;
 
-// Check if the clock is ready to proceed
-if (pToClockHandler->pClock->RCC_CR & RCC_CR_HSERDY) {
-    
-    printf("The external clock source is ready and available.\n");
-} else {
-    printf("The HSE is not ready yet. Allowing time for it to be set and trying again.\n");
-    for(int i = 0; i < 10000; i++);
-    if (pToClockHandler->pClock->RCC_CR & RCC_CR_HSERDY) {
-        printf("The external clock source is ready and available.\n");
-    } else {
-        printf("The external clock source was unable to start. Please verify the confirguration and try again.\n");
-
-    }
-}
+// wait for the clock to be ready
+while (!pToClockHandler->pClock->RCC_CR & RCC_CR_HSERDY) {}
 
 }

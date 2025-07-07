@@ -13,12 +13,6 @@
  #include "drivers/stm32f411xx_gpio.h"
  #include "drivers/stm32f411xx_intr.h"
  #include "drivers/stm32f411xx_clock.h"
-
-#define USE_EXTERNAL_CLOCK    1
-
-#ifndef USE_EXTERNAL_CLOCK
-#define USE_INTERNAL_CLOCK
-#endif
  
  #if !defined(__SOFT_FP__) && defined(__ARM_FP)
    #warning "FPU is not initialized, but the project is compiling for an FPU. Please initialize the FPU before use."
@@ -26,15 +20,10 @@
  
    GPIO_Handle_t ledHandler;
 
- int main(void)
- {
-
-  I2C_Init()
+ int main(void){
   
     
-  while (1) {
-
-  }
+  while (1) {}
   
  }
 
