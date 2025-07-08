@@ -4,6 +4,7 @@
         "stm32f411xx_intr.h": "c",
         "stm32f411xx_gpio.h": "c",
         "stm32f411xx.h": "c",
-        "stm32f411xx_clock.h": "c"
+        "stm32f411xx_clock.h": "c",
+        "stdio.h": "c"
     }
 }

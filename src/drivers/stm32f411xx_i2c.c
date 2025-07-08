@@ -55,6 +55,7 @@ void I2C_Init(I2C_Handle_t *pToI2CHandle, HSE_Clock_Handler_t *pToClockHandler) 
     //reset the CR1 and CR2 register to default
     pToI2CHandle->pI2Cx->I2C_CR1 = 0;
     pToI2CHandle->pI2Cx->I2C_CR2 = 0;
+    pToI2CHandle->pI2Cx->I2C_CCR = 0;
 
     // all initialization needs to happen with the perepheral disabled. 
     if (pToI2CHandle->pI2Cx->I2C_CR1 & ENABLE) {
@@ -65,12 +66,12 @@ void I2C_Init(I2C_Handle_t *pToI2CHandle, HSE_Clock_Handler_t *pToClockHandler) 
     } else {
 
     // data on the FREQ register in CR2 needs to match the same clock frequency that is on the APB bus line 
-    pToI2CHandle->pI2Cx->I2C_CR1 |= (pToClockHandler->ClockConfig.ClockFreq << 0);
+    pToI2CHandle->pI2Cx->I2C_CR2 |= (pToClockHandler->ClockConfig.ClockFreq << 0);
 
     // configure the mode (fast, normal)
     pToI2CHandle->pI2Cx->I2C_CCR |= (pToI2CHandle->I2C_PinConfig.I2C_Mode << I2C_CCR_FS);
 
-    // configure the speed of the serial clock (how many khz want)
+    // configure the speed of the serial clock
     float tpclock, thigh, tlow;
     uint8_t ccr;
 
@@ -101,6 +102,7 @@ void I2C_Init(I2C_Handle_t *pToI2CHandle, HSE_Clock_Handler_t *pToClockHandler) 
         }
 
     // configure the device addres (only if behaving as slave)
+    pToI2CHandle->pI2Cx->I2C_OAR1 = (pToI2CHandle->I2C_PinConfig.I2C_DeviceAddress << 1);
 
 
     // enable the acking (disabled by default)
