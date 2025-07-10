@@ -21,7 +21,10 @@
 
 #define NVIC_BASEADDR               0xE000E100UL
 
-
+ /**
+     * @struct NVIC_MapR_t
+     * @brief Represents all registers for configuring NVIC
+    */
 typedef struct {
     volatile uint32_t NVIC_ISER[7];
     volatile uint32_t NVIC_ICER[7];
@@ -31,6 +34,11 @@ typedef struct {
     volatile uint32_t NVIC_STIR;
 }NVIC_MapR_t;
 
+
+  /**
+     * @enum IRQn_MapR_t
+     * @brief Represents all possible priority values for interrupts (including M4 and STM32 specifics.)
+    */
 typedef enum
 {
   /******  Cortex-M4 Processor Exceptions Numbers ****************************************************************/
@@ -102,6 +110,13 @@ typedef enum
   SPI5_IRQn                   = 85      /*!< SPI5 global Interrupt                                              */
 } IRQn_MapR_t;
 
+ /**
+     * @struct IRQn_Handler_t
+     * @brief Represents a handler for configuring the NVIC interrupts
+     * @param IRQn the Enum of the correct IRQ to be configured
+    * @param posArray Array of positions or indices related to the IRQn configuration, typically used to store register bit positions or mapping information for the interrupt handler.
+     * @attention This structure is normally not used unless you're programming something driver related.
+    */
 typedef struct {
     IRQn_MapR_t IRQn;
     uint16_t posArray[6];
@@ -172,7 +187,10 @@ typedef struct {
  #define USBOTG_BASEADDR			(AHB2PERIPH_BASE + 0x0000)
  
 
- // Struct definition for RTC clock for all peripheral buses
+  /**
+     * @struct RTC_MapR_t
+     * @brief Represents all registers for configuring RTC
+    */
  typedef struct {
      volatile uint32_t RTC_TR; // time register
      volatile uint32_t RTC_DR; // date register
@@ -198,7 +216,10 @@ typedef struct {
  
  }RTC_MapR_t;
  
- // Struct definitopn for RCC clock for all peripheral buses
+ /**
+     * @struct RCC_Map_t
+     * @brief Represents all registers for configuring RCC
+    */
  typedef struct {
      volatile uint32_t RCC_CR; // clock control register
      volatile uint32_t RCC_PLLCFGR; // PLL configuration register
@@ -232,7 +253,10 @@ typedef struct {
  
  // Struct def for all common used peripherals.
  
- //struct definition for GPIOx
+ /**
+     * @struct GPIOx_MapR_t
+     * @brief Represents all registers for configuring an GPIO
+    */
  typedef struct {
      volatile uint32_t MODER; 		//mode select typer register
      volatile uint32_t OTYPER;		//output type register
@@ -248,7 +272,10 @@ typedef struct {
  }GPIOx_MapR_t;
  
  
- // struct definition for USARTx
+ /**
+     * @struct USARTx_MapR_t
+     * @brief Represents all registers for configuring an USART
+    */
  typedef struct {
      volatile uint32_t USART_SR; // status register
      volatile uint32_t USART_DR; // data register
@@ -260,7 +287,10 @@ typedef struct {
  
  }USARTx_MapR_t;
  
- // struct definition for SPIx
+ /**
+     * @struct SPIx_MapR_t
+     * @brief Represents all registers for configuring a SPI
+    */
  typedef struct {
      volatile uint32_t SPI_CR1; // control register 1
      volatile uint32_t SPI_CR2; // control register 2
@@ -274,7 +304,10 @@ typedef struct {
  
  }SPIx_MapR_t;
  
- // struct definition for I2Cx
+ /**
+     * @struct I2Cx_MapR_t
+     * @brief Represents all registers for configuring an I2C
+    */
  typedef struct {
      volatile uint32_t I2C_CR1; // control register 1
      volatile uint32_t I2C_CR2; // control register 2
@@ -288,7 +321,10 @@ typedef struct {
      volatile uint32_t I2C_FLTR; // fall time register
  }I2Cx_MapR_t;
 
- // struct definition for EXTI
+ /**
+     * @struct EXTI_MapR_t
+     * @brief Represents all registers for configuring EXTI (Interrupt controll for some peripherals, such as GPIO)
+    */
  typedef struct {
     volatile uint32_t EXTI_IMR; // interrupt mask register
     volatile uint32_t EXTI_EMR; // event mask register
@@ -298,6 +334,11 @@ typedef struct {
     volatile uint32_t EXTI_PR; // pending register
 } EXTI_MapR_t;
 
+
+ /**
+     * @struct SYSCFG_MapR_t
+     * @brief Represents all registers for configuring the System Config
+    */
 typedef struct {
     volatile uint32_t SYSCFG_MEMRMP; // memory remap register
     volatile uint32_t SYSCFG_PMC; // peripheral mode config register

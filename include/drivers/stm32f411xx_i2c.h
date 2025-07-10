@@ -13,6 +13,16 @@
 #include "drivers/stm32f411xx_clock.h"
 #include <stdint.h>
 
+
+  /**
+     * @struct I2C_PinConfig_t
+     * @brief Represents a structure with all the details needed for successfully cofiguring the I2C protocol
+     * @param I2C_ClockSpeed The speed wanted. In standard mode (SM), this value normally is set to I2C_SLC_SPEED_NORMAL (which is 100kHz). For Fast Mode (FS), this is normally set to I2C_SLC_SPEED_FAST (400kHz)
+     * @param I2C_DeviceAddress The device address if your configuring a slave
+     * @param I2C_AckControl This is to enalbe/disabling acking. The dafault value is ENABLE. Only set to DISABLE if needed
+     * @param I2C_DutyCycleForFastMode Only need to be set if using Fast Mode. Can be set I2C_DUTY_CYCLE_2 or I2C_DUTY_CYCLE_16_9
+     * @param I2C_Mode You can either set I2C_SLC_MODE_STANDARD or I2C_SLC_MODE_FAST. Defaulted to I2C_SLC_MODE_STANDARD
+    */
 typedef struct 
 {
     volatile uint8_t I2C_ClockSpeed;

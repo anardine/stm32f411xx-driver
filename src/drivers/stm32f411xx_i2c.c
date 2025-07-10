@@ -44,12 +44,13 @@ void I2C_PerClockControl(I2Cx_MapR_t *pI2Cx, uint8_t ENorDI) {
 
 /**
  * @brief  Initializes the I2C peripheral with the specified settings.
- * @param  pToI2CHandle: Pointer to the I2C handle structure containing configuration info.
- * @param  pToClockHandler: Pointer to the external clock structure
+ * @param  pToI2CHandle: Pointer to the I2C handle structure containing configuration info. Please check more details and the values supported at the I2C_Handle_t definition.
+ * @param  pToClockHandler: Pointer to the external clock structure.
  * @retval None
  */
 void I2C_Init(I2C_Handle_t *pToI2CHandle, HSE_Clock_Handler_t *pToClockHandler) {
 
+    //enables the I2C clock on the defined I2C number
     I2C_PerClockControl(pToI2CHandle->pI2Cx, ENABLE);
     
     //reset the CR1 and CR2 register to default
@@ -106,8 +107,9 @@ void I2C_Init(I2C_Handle_t *pToI2CHandle, HSE_Clock_Handler_t *pToClockHandler) 
 
 
     // enable the acking (disabled by default)
-    pToI2CHandle->pI2Cx->I2C_CR1 |= (I2C_CR1_ACK);
-
+    if (pToI2CHandle->I2C_PinConfig.I2C_AckControl == DISABLE) {
+        pToI2CHandle->pI2Cx->I2C_CR1 &= ~(I2C_CR1_ACK);
+    }
 
     // configure the rise time (later)
 

@@ -4,7 +4,7 @@
 #ifdef USE_EXTERNAL_CLOCK
 
     /**
-     * @brief  Configure and set all the necessary information for an External clock to be used
+     * @brief  Configure and set all the necessary bits for eabling an External clock
      * @param  pToClockHandler: Pointer to the Clock HSE handler structure
      * @retval None
      */
